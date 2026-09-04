@@ -1,0 +1,206 @@
+name: Android Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+
+  pull_request:
+    branches:
+      - main
+      - master
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código
+        uses: actions/checkout@v4
+
+      - name: Configurar JDK
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: gradle
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Dar permissão ao Gradle
+        run: chmod +x ./gradlew
+
+      - name: Restaurar keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/pauta.jks"
+
+      - name: Configurar assinatura
+        run: |
+          echo "RELEASE_STORE_FILE=$RUNNER_TEMP/pauta.jks" >> "$GITHUB_WORKSPACE/gradle.properties"
+          echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> "$GITHUB_WORKSPACE/gradle.properties"
+          echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> "$GITHUB_WORKSPACE/gradle.properties"
+          echo "RELEASE_KEY_PASSWORD=${{ secrets.RELEASE_KEY_PASSWORD }}" >> "$GITHUB_WORKSPACE/gradle.properties"
+
+      - name: Compilar APK Release
+        id: build
+        continue-on-error: true
+        run: |
+          set +e
+
+          ./gradlew assembleRelease --no-daemon 2>&1 | tee build.log
+          EXIT_CODE=${PIPESTATUS[0]}
+
+          if [ "$EXIT_CODE" -ne 0 ]; then
+            echo ""
+            echo "========================================"
+            echo "BUILD ANDROID FALHOU"
+            echo "========================================"
+            echo ""
+            echo "MOTIVO:"
+
+            grep -E \
+              'What went wrong:|Execution failed for task|e: |error:|ERROR|FAILURE:|Caused by:' \
+              build.log | head -20 || true
+
+            echo ""
+            echo "========================================"
+
+            exit "$EXIT_CODE"
+          fi
+
+      - name: Guardar APK
+        if: steps.build.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-release
+          path: app/build/outputs/apk/release/*.apk
+          if-no-files-found: error
+
+      - name: Criar GitHub Release
+        if: steps.build.outcome == 'success' && github.event_name == 'push'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: APK Build ${{ github.run_number }}
+          files: app/build/outputs/apk/release/*.apk
+          generate_release_notes: true
+
+      # ============================================================
+      # NOTIFICAÇÕES TELEGRAM
+      # ============================================================
+
+      - name: Extrair erro para notificação
+        id: error_log
+        if: steps.build.outcome == 'failure'
+        run: |
+          ERROR_MSG=$(grep -E \
+            'e: |error:|ERROR|FAILURE:|What went wrong:|Caused by:' \
+            build.log | head -15 || true)
+
+          if [ -z "$ERROR_MSG" ]; then
+            ERROR_MSG="Erro não identificado. Consulte os logs do GitHub Actions."
+          fi
+
+          {
+            echo "error_msg<<EOF"
+            echo "$ERROR_MSG"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Notificação Telegram - Sucesso
+        if: steps.build.outcome == 'success'
+        env:
+          TELEGRAM_TEXT: |
+            ✅ BUILD CONCLUÍDO COM SUCESSO!
+
+            📱 Pauta App
+            📦 Repo: ${{ github.repository }}
+            🔀 Branch: ${{ github.ref_name }}
+            🏷️ Build: #${{ github.run_number }}
+            📝 Commit: ${{ github.sha }}
+
+            📲 APK disponível:
+            🔗 ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          echo "========================================"
+          echo "📨 ENVIANDO NOTIFICAÇÃO DE SUCESSO"
+          echo "========================================"
+
+          curl --fail --silent --show-error \
+            -X POST \
+            "https://api.telegram.org/bot8811836046:AAHLA_DBJSYdjNM_0CbK1O12lzTX8lwU35o/sendMessage" \
+            --data-urlencode "chat_id=6298420571" \
+            --data-urlencode "text=$TELEGRAM_TEXT"
+
+      - name: Enviar APK para Telegram
+        if: steps.build.outcome == 'success'
+        run: |
+          echo "========================================"
+          echo "📨 ENVIANDO APK PARA TELEGRAM"
+          echo "========================================"
+
+          APK_PATH=$(find app/build/outputs/apk/release -type f -name "*.apk" | head -1)
+
+          if [ -f "$APK_PATH" ]; then
+            curl --fail --silent --show-error \
+              -F "chat_id=6298420571" \
+              -F "document=@$APK_PATH" \
+              -F "caption=📲 APK Build #${{ github.run_number }} - ${{ github.sha }}" \
+              "https://api.telegram.org/bot8811836046:AAHLA_DBJSYdjNM_0CbK1O12lzTX8lwU35o/sendDocument"
+
+            echo "✅ APK ENVIADO COM SUCESSO!"
+          else
+            echo "❌ APK NÃO ENCONTRADO!"
+            exit 1
+          fi
+
+      - name: Notificação Telegram - Falha
+        if: steps.build.outcome == 'failure'
+        env:
+          ERROR_MSG: ${{ steps.error_log.outputs.error_msg }}
+          TELEGRAM_CHAT_ID: "6298420571"
+        run: |
+          echo "========================================"
+          echo "📨 ENVIANDO NOTIFICAÇÃO DE FALHA"
+          echo "========================================"
+
+          if [ -z "$ERROR_MSG" ]; then
+            ERROR_MSG="Erro não identificado. Consulte os logs do GitHub Actions."
+          fi
+
+          # Limita o tamanho da mensagem
+          if [ "${#ERROR_MSG}" -gt 1000 ]; then
+            ERROR_MSG="${ERROR_MSG:0:1000}..."
+          fi
+
+          TELEGRAM_TEXT="❌ BUILD FALHOU!
+
+          📱 Pauta App
+          📦 Repo: ${{ github.repository }}
+          🔀 Branch: ${{ github.ref_name }}
+          🏷️ Build: #${{ github.run_number }}
+          📝 Commit: ${{ github.sha }}
+
+          🔴 ERRO:
+          $ERROR_MSG
+
+          🔗 Detalhes:
+          ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+          curl --fail --silent --show-error \
+            -X POST \
+            "https://api.telegram.org/bot8811836046:AAHLA_DBJSYdjNM_0CbK1O12lzTX8lwU35o/sendMessage" \
+            --data-urlencode "chat_id=$TELEGRAM_CHAT_ID" \
+            --data-urlencode "text=$TELEGRAM_TEXT"
+
+      - name: Falha resumida
+        if: steps.build.outcome == 'failure'
+        run: |
+          echo "O APK não foi gerado."
+          echo "Veja o bloco MOTIVO acima para identificar o erro."
+          exit 1

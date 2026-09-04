@@ -115,12 +115,12 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 // ---------------------------------------------------------------------------
-// Aba ativa — controla o que é exibido no corpo e no título da TopBar.
-// Não existe navegação nova: é só um enum de estado local.
+// Aba ativa — controla o que é exibido no corpo e no título da TopBar[cite: 1].
+// Não existe navegação nova: é só um enum de estado local[cite: 1].
 // ---------------------------------------------------------------------------
 private enum class Aba { INICIO, NOTIFICACOES, DETALHES }
 
-// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação.
+// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação[cite: 1].
 private data class DetalhesAtivos(
     val disciplina: DisciplinaComNotas,
     val alunoNome: String,
@@ -128,7 +128,7 @@ private data class DetalhesAtivos(
     val turmaNome: String
 )
 
-// Larguras das colunas da tabela de notas
+// Larguras das colunas da tabela de notas[cite: 1]
 private val LarguraColunaTrimestre = 56.dp
 private val LarguraColunaDado = 64.dp
 private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS", "AT", "MT")
@@ -137,10 +137,6 @@ private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS
 @Composable
 fun PerfilScreen(
     codigoAluno: String,
-    // Mantido só por compatibilidade com quem navega para esta tela de
-    // fora (Activity/NavHost). O fluxo de adicionar/trocar aluno agora é
-    // 100% interno (sheets + Flow do perfil ativo), então este callback
-    // não é mais chamado.
     onNovaConsulta: () -> Unit,
     onSairDaConta: () -> Unit,
     perfilViewModel: PerfilViewModel = viewModel(),
@@ -151,10 +147,6 @@ fun PerfilScreen(
         notificacoesViewModel.iniciar(codigoAluno)
     }
 
-    // Perfil ativo observado via Flow: quando o usuário troca de aluno no
-    // SeletorAlunoSheet, ativarPerfil() já atualiza o banco e o ViewModel
-    // recarrega os dados sozinho — este efeito só mantém as notificações
-    // em sincronia com o código do aluno que está ativo agora.
     val perfilAtivo by perfilViewModel.perfilAtivo.collectAsState()
     LaunchedEffect(perfilAtivo?.codigoAluno) {
         perfilAtivo?.codigoAluno?.let { codigo ->
@@ -171,7 +163,6 @@ fun PerfilScreen(
     val notificacoes by notificacoesViewModel.notificacoes.collectAsState()
     val notifCarregando by notificacoesViewModel.carregando.collectAsState()
 
-    // Estado de aba e detalhes — tudo local, zero navegação
     var abaAtiva by remember { mutableStateOf(Aba.INICIO) }
     var detalhesAtivos by remember { mutableStateOf<DetalhesAtivos?>(null) }
 
@@ -183,24 +174,14 @@ fun PerfilScreen(
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-    // Botão/gesto físico de voltar do Android.
-    // Prioridade 1: se o menu hambúrguer (drawer) estiver aberto, o voltar
-    // deve só fechar o drawer — nunca sair da tela ou do app enquanto ele
-    // estiver visível. Ficava "congelado"/sem reagir porque não havia
-    // nenhum BackHandler cobrindo esse estado.
     BackHandler(enabled = drawerState.isOpen) {
         scopeDrawer.launch { drawerState.close() }
     }
 
-    // Prioridade 2: em Detalhes (e com o drawer fechado), o voltar retorna
-    // para a aba Início em vez de sair do app.
     BackHandler(enabled = !drawerState.isOpen && abaAtiva == Aba.DETALHES) {
         abaAtiva = Aba.INICIO
     }
 
-    // Botão "+" da bottom bar: se só existe 1 aluno salvo, vai direto para
-    // adicionar outro; havendo mais de 1, abre o seletor (escolher entre
-    // os já salvos ou adicionar mais um) — conforme definido para este fluxo.
     val onAbrirGerenciarAlunos: () -> Unit = {
         if (perfisSalvos.size > 1) mostrarSeletorAluno = true
         else mostrarAdicionarAluno = true
@@ -210,17 +191,7 @@ fun PerfilScreen(
         drawerState = drawerState,
         gesturesEnabled = abaAtiva == Aba.INICIO,
         drawerContent = {
-            // Largura fixa e explícita: o padrão do Material3 já não cobre
-            // 100% da tela, mas fixamos aqui para garantir a proporção da
-            // referência (painel ocupando a maior parte, com uma faixa do
-            // conteúdo de trás ainda visível/escurecido do lado direito).
-            ModalDrawerSheet(
-                modifier = Modifier.width(304.dp)
-            ) {
-                // Cabeçalho com os dados do aluno logado (nome, turma e
-                // número), sempre que já tivermos os dados carregados.
-                // Segue o padrão de referência (Google Chat): informações
-                // do usuário no topo, antes das ações do menu.
+            ModalDrawerSheet(modifier = Modifier.width(304.dp)) {
                 val estadoAtual = uiState
                 if (estadoAtual is PerfilUiState.Sucesso) {
                     MenuHamburguerCabecalho(
@@ -255,17 +226,12 @@ fun PerfilScreen(
         }
     ) {
         Scaffold(
-            modifier = Modifier
-                .nestedScroll(scrollBehavior.nestedScrollConnection),
+            modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
             containerColor = MaterialTheme.colorScheme.background,
             topBar = {
                 MeuFilhoTopBar(
                     title = "",
                     scrollBehavior = scrollBehavior,
-                    // Botão esquerdo: sempre o hambúrguer, em qualquer aba.
-                    // A navegação entre abas é só estado local, não precisa de
-                    // seta de voltar — o botão físico/gesto do Android cuida
-                    // de sair de Detalhes (ver BackHandler acima).
                     navigationIcon = {
                         MeuFilhoTopBarIconButton(
                             icon = Icons.Filled.Menu,
@@ -273,14 +239,12 @@ fun PerfilScreen(
                             onClick = { scopeDrawer.launch { drawerState.open() } }
                         )
                     },
-                    // Campo de busca sempre visível, em qualquer aba.
                     titleContent = {
                         PesquisarDisciplinasField(
                             valor = termoPesquisa,
                             onValorChange = { termoPesquisa = it }
                         )
                     },
-                    // Ações à direita: avatar sempre presente, em qualquer aba.
                     actions = {
                         Box(modifier = Modifier.padding(end = Spacing.xs)) {
                             PerfilAvatarButton(
@@ -313,25 +277,19 @@ fun PerfilScreen(
                 ) { aba ->
                     when (aba) {
                         Aba.INICIO -> {
+                            // Observa a KClass do estado para evitar que a troca no termo de busca acione o fade[cite: 1]
                             AnimatedContent(
-                                targetState = uiState,
+                                targetState = uiState::class,
                                 transitionSpec = { fadeIn(tween(220)) togetherWith fadeOut(tween(140)) },
                                 label = "perfilState"
-                            ) { state ->
-                                when (state) {
+                            ) { _ ->
+                                when (val state = uiState) {
                                     is PerfilUiState.Carregando -> LoadingState()
                                     is PerfilUiState.Erro -> ErroState(state.mensagem)
                                     is PerfilUiState.Sucesso -> {
-                                        val disciplinasFiltradas = remember(state.dados.disciplinas, termoPesquisa) {
-                                            if (termoPesquisa.isBlank()) state.dados.disciplinas
-                                            else state.dados.disciplinas.filter {
-                                                it.nomeDisciplina.contains(termoPesquisa, ignoreCase = true)
-                                            }
-                                        }
                                         InicioContent(
                                             state = state,
-                                            disciplinas = disciplinasFiltradas,
-                                            pesquisaAtiva = termoPesquisa.isNotBlank(),
+                                            termoPesquisa = termoPesquisa,
                                             onAbrirDetalhes = { disciplina ->
                                                 detalhesAtivos = DetalhesAtivos(
                                                     disciplina = disciplina,
@@ -377,7 +335,6 @@ fun PerfilScreen(
             }
         }
 
-        // Diálogo: Sair da conta
         if (mostrarDialogoSair) {
             AlertDialog(
                 onDismissRequest = { mostrarDialogoSair = false },
@@ -396,9 +353,6 @@ fun PerfilScreen(
             )
         }
 
-        // Sheet: escolher entre alunos já salvos, ou ir para adicionar outro.
-        // Trocar de aluno aqui é instantâneo — ativarPerfil() atualiza o banco
-        // e a tela reage sozinha via Flow, sem navegação nem tela cheia.
         if (mostrarSeletorAluno) {
             SeletorAlunoSheet(
                 perfis = perfisSalvos,
@@ -414,18 +368,14 @@ fun PerfilScreen(
             )
         }
 
-        // Sheet: adicionar um novo aluno pelo código da escola. Ao confirmar
-        // com sucesso, o novo aluno já fica ativo e a tela troca os dados na
-        // hora — nenhum aluno anterior é apagado ou desativado de forma
-        // destrutiva, todos continuam disponíveis no seletor.
         if (mostrarAdicionarAluno) {
             AdicionarAlunoSheet(
                 onDismiss = { mostrarAdicionarAluno = false },
                 onAlunoAtivado = { mostrarAdicionarAluno = false }
             )
         }
-    } // fim do Scaffold
-} // fim do ModalNavigationDrawer (e da função PerfilScreen)
+    }
+}
 
 // ---------------------------------------------------------------------------
 // Conteúdo: Início
@@ -433,10 +383,18 @@ fun PerfilScreen(
 @Composable
 private fun InicioContent(
     state: PerfilUiState.Sucesso,
-    disciplinas: List<DisciplinaComNotas>,
-    pesquisaAtiva: Boolean,
+    termoPesquisa: String,
     onAbrirDetalhes: (DisciplinaComNotas) -> Unit
 ) {
+    val disciplinasFiltradas = remember(state.dados.disciplinas, termoPesquisa) {
+        if (termoPesquisa.isBlank()) state.dados.disciplinas
+        else state.dados.disciplinas.filter {
+            it.nomeDisciplina.contains(termoPesquisa, ignoreCase = true)
+        }
+    }
+
+    val pesquisaAtiva = termoPesquisa.isNotBlank()
+
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
         contentPadding = PaddingValues(bottom = Spacing.xl)
@@ -472,7 +430,7 @@ private fun InicioContent(
             }
         }
 
-        if (disciplinas.isEmpty()) {
+        if (disciplinasFiltradas.isEmpty()) {
             item {
                 Column(
                     modifier = Modifier.fillMaxWidth().padding(Spacing.xl),
@@ -502,7 +460,7 @@ private fun InicioContent(
                 }
             }
         } else {
-            items(disciplinas, key = { it.disciplinaId }) { disciplina ->
+            items(disciplinasFiltradas, key = { it.disciplinaId }) { disciplina ->
                 DisciplinaCard(
                     disciplina = disciplina,
                     onClick = { onAbrirDetalhes(disciplina) },
@@ -535,9 +493,6 @@ private fun NotificacoesContent(
         contentPadding = PaddingValues(bottom = Spacing.xl)
     ) {
         item {
-            // Cabeçalho "Notificações" com o ícone de ação à direita —
-            // mesmo padrão de "Mensagens diretas" + balão na referência.
-            // Fica dentro do conteúdo da tela, não na TopBar nem na bottom bar.
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -668,8 +623,6 @@ private fun NotificacaoItem(
             modifier = modifier.fillMaxWidth()
         ) {
             Row(modifier = Modifier.padding(Spacing.md), verticalAlignment = Alignment.Top) {
-                // Ícone quadrado arredondado — cor única para todas as
-                // disciplinas, variando só por tipo de alteração.
                 Box(
                     modifier = Modifier
                         .size(44.dp)
@@ -691,7 +644,6 @@ private fun NotificacaoItem(
                 Spacer(Modifier.width(Spacing.sm + 4.dp))
 
                 Column(modifier = Modifier.weight(1f)) {
-                    // "Professor(a) Nome lançou/atualizou/removeu nota de Disciplina"
                     Text(
                         text = buildAnnotatedString {
                             val quem = notificacao.professorNome.ifBlank { null }
@@ -792,7 +744,6 @@ private fun DetalhesContent(
             }
         }
         item {
-            // Tabela de notas com scroll horizontal
             Card(
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -801,7 +752,6 @@ private fun DetalhesContent(
             ) {
                 val scrollState = rememberScrollState()
                 Column(modifier = Modifier.fillMaxWidth().horizontalScroll(scrollState)) {
-                    // Header
                     Column {
                         Row(
                             modifier = Modifier.background(MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)).padding(vertical = Spacing.sm)
@@ -818,7 +768,6 @@ private fun DetalhesContent(
                         }
                         HorizontalDivider(color = MaterialTheme.colorScheme.outline, thickness = 1.5.dp)
                     }
-                    // Linhas
                     linhas.forEachIndexed { rowIndex, linha ->
                         val corFundo = if (rowIndex % 2 == 1) MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.35f) else MaterialTheme.colorScheme.surface
                         val valores = listOf(linha.trimestre, linha.acs1, linha.acs2, linha.acs3, linha.macs, linha.at, linha.mt)
@@ -853,7 +802,6 @@ private fun DetalhesContent(
             }
         }
         item {
-            // Card de média final
             val cor = when {
                 mediaFinal == null -> MaterialTheme.colorScheme.onSurfaceVariant
                 mediaFinal < 10 -> CapulanaRed
@@ -907,6 +855,7 @@ private fun ErroState(mensagem: String) {
         Text(mensagem, textAlign = TextAlign.Center)
     }
 }
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PesquisarDisciplinasField(
@@ -990,12 +939,6 @@ private fun DisciplinaCard(disciplina: DisciplinaComNotas, onClick: () -> Unit, 
     }
 }
 
-/**
- * Cabeçalho exibido no topo do menu hambúrguer com os dados do aluno
- * cuja consulta está ativa: foto/avatar, nome, número e turma. Segue o
- * padrão de referência (menu de conta do Google Chat), onde as
- * informações do usuário aparecem antes das ações do menu.
- */
 @Composable
 private fun MenuHamburguerCabecalho(
     fotoUrl: String?,
@@ -1058,10 +1001,6 @@ private fun PerfilAvatarButton(fotoUrl: String?, onClick: () -> Unit, modifier: 
     }
 }
 
-/**
- * Bottom bar com 3 botões. O botão ativo (Início ou Notificações) fica
- * destacado com container primário. O botão + sempre chama Nova consulta.
- */
 @Composable
 private fun InicioBottomBar(
     abaAtiva: Aba,
@@ -1077,9 +1016,6 @@ private fun InicioBottomBar(
         shadowElevation = 3.dp,
         modifier = Modifier
             .fillMaxWidth()
-            // Só o inset de baixo (navigation bar / gestos do sistema).
-            // A status bar já é tratada pela TopBar; aplicar aqui de novo
-            // voltaria a empurrar tudo e recriar o problema da faixa em cima.
             .windowInsetsPadding(WindowInsets.navigationBars)
             .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
     ) {
@@ -1088,7 +1024,6 @@ private fun InicioBottomBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Botão Início
             Surface(
                 onClick = onIrInicio,
                 shape = CircleShape,
@@ -1110,8 +1045,6 @@ private fun InicioBottomBar(
                 }
             }
 
-            // Botão Notificações — mesma estrutura do botão Início:
-            // Surface com container destacado quando a aba está ativa.
             Surface(
                 onClick = onIrNotificacoes,
                 shape = CircleShape,
@@ -1139,20 +1072,12 @@ private fun InicioBottomBar(
                 }
             }
 
-            // Botão + Nova consulta
             IconButton(onClick = onNovaConsulta, modifier = Modifier.size(48.dp)) {
                 Icon(Icons.Filled.Add, contentDescription = "Nova consulta")
             }
         }
     }
 }
-
-// ---------------------------------------------------------------------------
-// Helpers de notificações
-// ---------------------------------------------------------------------------
-// textoAcao removido: o texto do card agora é montado inline em
-// NotificacaoItem (formato "Professor(a) X lançou/atualizou/removeu nota
-// de Y"), que já cobre os três tipos.
 
 private fun formatarDataHora(timestamp: Long): String {
     val diferenca = System.currentTimeMillis() - timestamp
