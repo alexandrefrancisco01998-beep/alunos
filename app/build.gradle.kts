@@ -1,4 +1,3 @@
-// Force rebuild #13
 import java.util.Properties;
 
 plugins {
