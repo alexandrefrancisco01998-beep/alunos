@@ -35,6 +35,7 @@ jobs:
       - name: Dar permissão ao Gradle
         run: chmod +x ./gradlew
 
+
       - name: Restaurar keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/pauta.jks"
