@@ -16,12 +16,12 @@ android {
     lint {
         disable.add("NullSafeMutableLiveData")
     }
-    namespace = "com.ap.pautaa"
+    namespace = "com.imobiliario.aluno"
     compileSdk = 35
 
 
     defaultConfig {
-        applicationId = "com.ap.pautaa"
+        applicationId = "com.imobiliario.aluno"
         minSdk = 26
         targetSdk = 35
         versionCode = 63

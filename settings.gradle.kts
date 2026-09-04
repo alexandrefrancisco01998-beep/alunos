@@ -15,5 +15,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "pauta"
+rootProject.name = "aluno"
 include(":app")
