@@ -1,0 +1,138 @@
+{
+  "project_info": {
+    "project_number": "1037826423700",
+    "firebase_url": "https://mapasepauta-default-rtdb.firebaseio.com",
+    "project_id": "mapasepauta",
+    "storage_bucket": "mapasepauta.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037826423700:android:d964be34220faf41dfed81",
+        "android_client_info": {
+          "package_name": "com.ap.pauta"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037826423700-v6eicngtlfcjbaig5dvbi6ibl5jffm96.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ap.pauta",
+            "certificate_hash": "b9575f125142eacbb533e146003ba6e1c1777b2a"
+          }
+        },
+        {
+          "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJVF8NdjR9LaKPx3YF4ETl0N16g_Tby1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037826423700:android:b0416730745af11edfed81",
+        "android_client_info": {
+          "package_name": "com.ap.pautaa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037826423700-dlio2u2b9mkdgil72a55ktof24brdvu4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ap.pautaa",
+            "certificate_hash": "b9575f125142eacbb533e146003ba6e1c1777b2a"
+          }
+        },
+        {
+          "client_id": "1037826423700-ge6qfnp4i71a2blf0hq1n407q0s21ctr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ap.pautaa",
+            "certificate_hash": "07452c652fd0c791b9d09f1baaeec37339e3824a"
+          }
+        },
+        {
+          "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJVF8NdjR9LaKPx3YF4ETl0N16g_Tby1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1037826423700:android:ba3a705d395ee8a8dfed81",
+        "android_client_info": {
+          "package_name": "com.imobiliario.aluno"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1037826423700-isjv2k09dtedk4cnvmhu1sgj6lhs5lks.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imobiliario.aluno",
+            "certificate_hash": "b9575f125142eacbb533e146003ba6e1c1777b2a"
+          }
+        },
+        {
+          "client_id": "1037826423700-otkk05dbebo5u8e47v7v2j2rtb2d72hu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imobiliario.aluno",
+            "certificate_hash": "07452c652fd0c791b9d09f1baaeec37339e3824a"
+          }
+        },
+        {
+          "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDJVF8NdjR9LaKPx3YF4ETl0N16g_Tby1w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1037826423700-6dci7unsbv9o6684g0dn09auel8fug4l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
