@@ -4,8 +4,8 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    // Substitua a linha do alias por esta:
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21" // Use a mesma versão do Kotlin do projeto
+    alias(libs.plugins.kotlin.serialization)
+
     id("kotlin-kapt")
     id("kotlin-parcelize")
     id("com.google.gms.google-services")
