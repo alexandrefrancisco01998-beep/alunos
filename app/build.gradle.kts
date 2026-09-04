@@ -1,4 +1,3 @@
-import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -27,11 +26,7 @@ android {
         versionName = "7.3.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val localProperties = Properties()
-        val localPropertiesFile = rootProject.file("local.properties")
-        if (localPropertiesFile.exists()) {
-            localProperties.load(localPropertiesFile.inputStream())
-        }
+    
 
         val geminiKey = project.findProperty("GEMINI_API_KEY") as String? ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
