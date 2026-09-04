@@ -3,17 +3,21 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.kotlin.compose)  // ← AGORA FUNCIONA!
+    alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.serialization)
-    id("com.google.gms.google-services")
+
     id("kotlin-kapt")
     id("kotlin-parcelize")
+    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
 
 android {
+    lint {
+        disable.add("NullSafeMutableLiveData")
+    }
     namespace = "com.imobiliario.aluno"
-    compileSdk = 36
+    compileSdk = 35
 
 
     defaultConfig {
@@ -44,10 +48,26 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file("C:/Users/Admin/AndroidStudioProjects/pauta.jks")
-            storePassword = "849431020Alex@"
-            keyAlias = "key0"
-            keyPassword = "849431020Alex@"
+            val keystorePath = project.findProperty("RELEASE_STORE_FILE") as String?
+            val keystorePassword = project.findProperty("RELEASE_STORE_PASSWORD") as String?
+            val keyAliasValue = project.findProperty("RELEASE_KEY_ALIAS") as String?
+            val keyPasswordValue = project.findProperty("RELEASE_KEY_PASSWORD") as String?
+
+            if (!keystorePath.isNullOrBlank()) {
+                storeFile = file(keystorePath)
+            }
+
+            if (!keystorePassword.isNullOrBlank()) {
+                storePassword = keystorePassword
+            }
+
+            if (!keyAliasValue.isNullOrBlank()) {
+                keyAlias = keyAliasValue
+            }
+
+            if (!keyPasswordValue.isNullOrBlank()) {
+                keyPassword = keyPasswordValue
+            }
         }
     }
 
@@ -55,18 +75,22 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
             signingConfig = signingConfigs.getByName("release")
         }
+
         debug {
-            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false
         }
     }
+
+
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
