@@ -19,7 +19,6 @@ android {
     namespace = "com.imobiliario.aluno"
     compileSdk = 35
 
-
     defaultConfig {
         applicationId = "com.imobiliario.aluno"
         minSdk = 26
@@ -90,8 +89,6 @@ android {
         }
     }
 
-
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -115,8 +112,6 @@ android {
         viewBinding = true
         compose = true
     }
-
-    // ❌ REMOVIDO: composeOptions — não precisa mais com Kotlin 2.0+
 }
 
 dependencies {
@@ -174,7 +169,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging-ktx")
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-appcheck-playintegrity")
-    implementation("com.google.firebase:firebase-storage-ktx") // ← ADICIONE ESTA LINHA
+    implementation("com.google.firebase:firebase-storage-ktx")
 
     // Google Sign-In
     implementation("com.google.android.gms:play-services-auth:20.7.0")
@@ -218,13 +213,12 @@ dependencies {
 
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    // Hilt (opcional, mas recomendado para injeção)
+    // Hilt
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-compiler:2.48")
+
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }
-
-
