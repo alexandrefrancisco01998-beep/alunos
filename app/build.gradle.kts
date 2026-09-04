@@ -218,7 +218,7 @@ dependencies {
     implementation("com.android.installreferrer:installreferrer:2.2")
 
     implementation("androidx.lifecycle:lifecycle-process:2.8.7")
-
+    implementation("androidx.core:core-splashscreen:1.0.1")
     // Hilt (opcional, mas recomendado para injeção)
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-compiler:2.48")
