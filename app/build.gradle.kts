@@ -1,3 +1,4 @@
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
@@ -15,18 +16,23 @@ android {
     lint {
         disable.add("NullSafeMutableLiveData")
     }
-    namespace = "com.imobiliario.aluno"
+    namespace = "com.ap.pautaa"
     compileSdk = 35
 
+
     defaultConfig {
-        applicationId = "com.imobiliario.aluno"
+        applicationId = "com.ap.pautaa"
         minSdk = 26
         targetSdk = 35
         versionCode = 63
         versionName = "7.3.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    
+        val localProperties = Properties()
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            localProperties.load(localPropertiesFile.inputStream())
+        }
 
         val geminiKey = project.findProperty("GEMINI_API_KEY") as String? ?: ""
         buildConfigField("String", "GEMINI_API_KEY", "\"$geminiKey\"")
@@ -84,6 +90,8 @@ android {
         }
     }
 
+
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -107,7 +115,10 @@ android {
         viewBinding = true
         compose = true
     }
+
+    // ❌ REMOVIDO: composeOptions — não precisa mais com Kotlin 2.0+
 }
+
 
 dependencies {
     // AndroidX
