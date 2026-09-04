@@ -1,4 +1,4 @@
-// Force rebuild #13 
+// Force rebuild #13
 import java.util.Properties
 
 plugins {
@@ -130,7 +130,6 @@ dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.firebase.storage.ktx)
-    implementation(libs.androidx.compose.foundation)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // Compose
