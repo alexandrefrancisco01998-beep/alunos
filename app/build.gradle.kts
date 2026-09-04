@@ -3,25 +3,21 @@ import java.util.Properties
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
-    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.compose)  // ← AGORA FUNCIONA!
     alias(libs.plugins.kotlin.serialization)
-
+    id("com.google.gms.google-services")
     id("kotlin-kapt")
     id("kotlin-parcelize")
-    id("com.google.gms.google-services")
     id("com.google.firebase.crashlytics")
 }
 
 android {
-    lint {
-        disable.add("NullSafeMutableLiveData")
-    }
-    namespace = "com.ap.pautaa"
-    compileSdk = 35
+    namespace = "com.imobiliario.aluno"
+    compileSdk = 36
 
 
     defaultConfig {
-        applicationId = "com.ap.pautaa"
+        applicationId = "com.imobiliario.aluno"
         minSdk = 26
         targetSdk = 35
         versionCode = 63
@@ -48,26 +44,10 @@ android {
 
     signingConfigs {
         create("release") {
-            val keystorePath = project.findProperty("RELEASE_STORE_FILE") as String?
-            val keystorePassword = project.findProperty("RELEASE_STORE_PASSWORD") as String?
-            val keyAliasValue = project.findProperty("RELEASE_KEY_ALIAS") as String?
-            val keyPasswordValue = project.findProperty("RELEASE_KEY_PASSWORD") as String?
-
-            if (!keystorePath.isNullOrBlank()) {
-                storeFile = file(keystorePath)
-            }
-
-            if (!keystorePassword.isNullOrBlank()) {
-                storePassword = keystorePassword
-            }
-
-            if (!keyAliasValue.isNullOrBlank()) {
-                keyAlias = keyAliasValue
-            }
-
-            if (!keyPasswordValue.isNullOrBlank()) {
-                keyPassword = keyPasswordValue
-            }
+            storeFile = file("C:/Users/Admin/AndroidStudioProjects/pauta.jks")
+            storePassword = "849431020Alex@"
+            keyAlias = "key0"
+            keyPassword = "849431020Alex@"
         }
     }
 
@@ -75,22 +55,18 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
             signingConfig = signingConfigs.getByName("release")
         }
-
         debug {
+            signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             isShrinkResources = false
         }
     }
-
-
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -120,7 +96,6 @@ android {
 }
 
 dependencies {
-    implementation("androidx.compose.runtime:runtime-livedata:1.8.3")
     // AndroidX
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -135,6 +110,7 @@ dependencies {
     // Compose BOM
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.firebase.storage.ktx)
+    implementation(libs.androidx.compose.foundation)
     androidTestImplementation(platform(libs.androidx.compose.bom))
 
     // Compose
@@ -150,7 +126,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-compose:2.9.4")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.4")
     implementation("androidx.navigation:navigation-compose:2.9.8")
-    implementation("com.google.firebase:firebase-crashlytics")
+
     // Tooling
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
@@ -200,7 +176,6 @@ dependencies {
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.10.2")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     // Network
     implementation("com.squareup.okhttp3:okhttp:4.12.0")
@@ -217,8 +192,8 @@ dependencies {
     implementation("com.google.android.play:app-update:2.1.0")
     implementation("com.android.installreferrer:installreferrer:2.2")
 
-    implementation("androidx.lifecycle:lifecycle-process:2.8.7")
     implementation("androidx.core:core-splashscreen:1.0.1")
+
     // Hilt (opcional, mas recomendado para injeção)
     implementation("com.google.dagger:hilt-android:2.48")
     kapt("com.google.dagger:hilt-compiler:2.48")

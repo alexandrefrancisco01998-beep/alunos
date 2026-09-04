@@ -22,8 +22,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.ap.pautaa" />
-                  <option name="mobileSdkAppId" value="1:1037826423700:android:b0416730745af11edfed81" />
+                  <option name="appId" value="com.imobiliario.aluno" />
+                  <option name="mobileSdkAppId" value="1:1037826423700:android:ba3a705d395ee8a8dfed81" />
                   <option name="projectId" value="mapasepauta" />
                   <option name="projectNumber" value="1037826423700" />
                 </ConnectionSetting>
