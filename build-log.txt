@@ -1,0 +1,580 @@
+build	UNKNOWN STEP	﻿2026-09-04T14:05:04.0742102Z Current runner version: '2.337.0'
+build	UNKNOWN STEP	2026-09-04T14:05:04.0780726Z ##[group]Runner Image Provisioner
+build	UNKNOWN STEP	2026-09-04T14:05:04.0782409Z Hosted Compute Agent
+build	UNKNOWN STEP	2026-09-04T14:05:04.0783532Z Version: 20260828.587
+build	UNKNOWN STEP	2026-09-04T14:05:04.0785088Z Commit: abac92662cab4cc7352de4f9f9d2e2419aad9c29
+build	UNKNOWN STEP	2026-09-04T14:05:04.0786457Z Build Date: 2026-08-28T16:44:25Z
+build	UNKNOWN STEP	2026-09-04T14:05:04.0787734Z Worker ID: {4ed9a7ef-2ced-4d4d-b8f5-3f2f23451790}
+build	UNKNOWN STEP	2026-09-04T14:05:04.0789167Z Azure Region: eastus
+build	UNKNOWN STEP	2026-09-04T14:05:04.0790298Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:04.0792679Z ##[group]Operating System
+build	UNKNOWN STEP	2026-09-04T14:05:04.0794242Z Ubuntu
+build	UNKNOWN STEP	2026-09-04T14:05:04.0795343Z 24.04.4
+build	UNKNOWN STEP	2026-09-04T14:05:04.0796292Z LTS
+build	UNKNOWN STEP	2026-09-04T14:05:04.0797252Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:04.0798429Z ##[group]Runner Image
+build	UNKNOWN STEP	2026-09-04T14:05:04.0799510Z Image: ubuntu-24.04
+build	UNKNOWN STEP	2026-09-04T14:05:04.0800707Z Version: 20260831.293.1
+build	UNKNOWN STEP	2026-09-04T14:05:04.0802961Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260831.293/images/ubuntu/Ubuntu2404-Readme.md
+build	UNKNOWN STEP	2026-09-04T14:05:04.0806329Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260831.293
+build	UNKNOWN STEP	2026-09-04T14:05:04.0808177Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:04.0810301Z ##[group]GITHUB_TOKEN Permissions
+build	UNKNOWN STEP	2026-09-04T14:05:04.0813452Z Contents: write
+build	UNKNOWN STEP	2026-09-04T14:05:04.0814989Z Metadata: read
+build	UNKNOWN STEP	2026-09-04T14:05:04.0815956Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:04.0819407Z Secret source: Actions
+build	UNKNOWN STEP	2026-09-04T14:05:04.0821454Z Prepare workflow directory
+build	UNKNOWN STEP	2026-09-04T14:05:04.1309695Z Prepare all required actions
+build	UNKNOWN STEP	2026-09-04T14:05:04.1382272Z Getting action download info
+build	UNKNOWN STEP	2026-09-04T14:05:04.3799343Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+build	UNKNOWN STEP	2026-09-04T14:05:04.5402096Z Download action repository 'actions/setup-java@v5' (SHA:b6effb05e454b25005698d916606bdc6ffcbf961)
+build	UNKNOWN STEP	2026-09-04T14:05:04.7947650Z Download action repository 'gradle/actions@v4' (SHA:ed408507eac070d1f99cc633dbcf757c94c7933a)
+build	UNKNOWN STEP	2026-09-04T14:05:05.5932375Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+build	UNKNOWN STEP	2026-09-04T14:05:05.7403196Z Download action repository 'softprops/action-gh-release@v2' (SHA:3bb12739c298aeb8a4eeaf626c5b8d85266b0e65)
+build	UNKNOWN STEP	2026-09-04T14:05:06.0092052Z Complete job name: build
+build	UNKNOWN STEP	2026-09-04T14:05:06.1077183Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:05:06.1088608Z ##[group]Run actions/checkout@v4
+build	UNKNOWN STEP	2026-09-04T14:05:06.1090383Z with:
+build	UNKNOWN STEP	2026-09-04T14:05:06.1091672Z   repository: alexandrefrancisco01998-beep/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:06.1098217Z   token: ***
+build	UNKNOWN STEP	2026-09-04T14:05:06.1099027Z   ssh-strict: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1099783Z   ssh-user: git
+build	UNKNOWN STEP	2026-09-04T14:05:06.1100570Z   persist-credentials: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1101404Z   clean: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1102234Z   sparse-checkout-cone-mode: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1103101Z   fetch-depth: 1
+build	UNKNOWN STEP	2026-09-04T14:05:06.1104144Z   fetch-tags: false
+build	UNKNOWN STEP	2026-09-04T14:05:06.1104947Z   show-progress: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1105715Z   lfs: false
+build	UNKNOWN STEP	2026-09-04T14:05:06.1106497Z   submodules: false
+build	UNKNOWN STEP	2026-09-04T14:05:06.1107287Z   set-safe-directory: true
+build	UNKNOWN STEP	2026-09-04T14:05:06.1108129Z   allow-unsafe-pr-checkout: false
+build	UNKNOWN STEP	2026-09-04T14:05:06.1109381Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:06.2383242Z Syncing repository: alexandrefrancisco01998-beep/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:06.2406969Z ##[group]Getting Git version info
+build	UNKNOWN STEP	2026-09-04T14:05:06.2438963Z Working directory is '/home/runner/work/pauta/pauta'
+build	UNKNOWN STEP	2026-09-04T14:05:06.2459814Z [command]/usr/bin/git version
+build	UNKNOWN STEP	2026-09-04T14:05:06.2461856Z git version 2.55.0
+build	UNKNOWN STEP	2026-09-04T14:05:06.2567129Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:06.2583168Z Temporarily overriding HOME='/home/runner/work/_temp/c40eb218-4605-4f94-a230-f5625d8862cc' before making global git config changes
+build	UNKNOWN STEP	2026-09-04T14:05:06.2590332Z Adding repository directory to the temporary git global config as a safe directory
+build	UNKNOWN STEP	2026-09-04T14:05:06.2593289Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pauta/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:06.2597364Z Deleting the contents of '/home/runner/work/pauta/pauta'
+build	UNKNOWN STEP	2026-09-04T14:05:06.2600034Z ##[group]Initializing the repository
+build	UNKNOWN STEP	2026-09-04T14:05:06.2601789Z [command]/usr/bin/git init /home/runner/work/pauta/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:06.2724834Z hint: Using 'master' as the name for the initial branch. This default branch name
+build	UNKNOWN STEP	2026-09-04T14:05:06.2745359Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+build	UNKNOWN STEP	2026-09-04T14:05:06.2756064Z hint: to use in all of your new repositories, which will suppress this warning,
+build	UNKNOWN STEP	2026-09-04T14:05:06.2758156Z hint: call:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2759626Z hint:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2761103Z hint: 	git config --global init.defaultBranch <name>
+build	UNKNOWN STEP	2026-09-04T14:05:06.2762108Z hint:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2763451Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+build	UNKNOWN STEP	2026-09-04T14:05:06.2765794Z hint: 'development'. The just-created branch can be renamed via this command:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2767857Z hint:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2775127Z hint: 	git branch -m <name>
+build	UNKNOWN STEP	2026-09-04T14:05:06.2785478Z hint:
+build	UNKNOWN STEP	2026-09-04T14:05:06.2791710Z hint: Disable this message with "git config set advice.defaultBranchName false"
+build	UNKNOWN STEP	2026-09-04T14:05:06.2795279Z Initialized empty Git repository in /home/runner/work/pauta/pauta/.git/
+build	UNKNOWN STEP	2026-09-04T14:05:06.2804464Z [command]/usr/bin/git remote add origin https://github.com/alexandrefrancisco01998-beep/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:06.2830487Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:06.2833088Z ##[group]Disabling automatic garbage collection
+build	UNKNOWN STEP	2026-09-04T14:05:06.2843526Z [command]/usr/bin/git config --local gc.auto 0
+build	UNKNOWN STEP	2026-09-04T14:05:06.2950675Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:06.2976201Z ##[group]Setting up auth
+build	UNKNOWN STEP	2026-09-04T14:05:06.2979359Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	UNKNOWN STEP	2026-09-04T14:05:06.2989583Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	UNKNOWN STEP	2026-09-04T14:05:06.3451455Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	UNKNOWN STEP	2026-09-04T14:05:06.3497011Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	UNKNOWN STEP	2026-09-04T14:05:06.3869835Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	UNKNOWN STEP	2026-09-04T14:05:06.3888467Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	UNKNOWN STEP	2026-09-04T14:05:06.4136118Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+build	UNKNOWN STEP	2026-09-04T14:05:06.4179829Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:06.4182947Z ##[group]Fetching the repository
+build	UNKNOWN STEP	2026-09-04T14:05:06.4193016Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +eb298b85335b9f02ced3d8afe0fa4cf036ecad0c:refs/remotes/origin/master
+build	UNKNOWN STEP	2026-09-04T14:05:07.7805615Z From https://github.com/alexandrefrancisco01998-beep/pauta
+build	UNKNOWN STEP	2026-09-04T14:05:07.7808957Z  * [new ref]         eb298b85335b9f02ced3d8afe0fa4cf036ecad0c -> origin/master
+build	UNKNOWN STEP	2026-09-04T14:05:07.7852293Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:07.7855038Z ##[group]Determining the checkout info
+build	UNKNOWN STEP	2026-09-04T14:05:07.7857421Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:07.7858980Z [command]/usr/bin/git sparse-checkout disable
+build	UNKNOWN STEP	2026-09-04T14:05:07.7927636Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+build	UNKNOWN STEP	2026-09-04T14:05:07.7995339Z ##[group]Checking out the ref
+build	UNKNOWN STEP	2026-09-04T14:05:07.8001924Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+build	UNKNOWN STEP	2026-09-04T14:05:08.0360396Z Reset branch 'master'
+build	UNKNOWN STEP	2026-09-04T14:05:08.0378403Z branch 'master' set up to track 'origin/master'.
+build	UNKNOWN STEP	2026-09-04T14:05:08.0383578Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:08.0441398Z [command]/usr/bin/git log -1 --format=%H
+build	UNKNOWN STEP	2026-09-04T14:05:08.0485600Z eb298b85335b9f02ced3d8afe0fa4cf036ecad0c
+build	UNKNOWN STEP	2026-09-04T14:05:08.0826051Z ##[group]Run actions/setup-java@v5
+build	UNKNOWN STEP	2026-09-04T14:05:08.0826419Z with:
+build	UNKNOWN STEP	2026-09-04T14:05:08.0826647Z   distribution: temurin
+build	UNKNOWN STEP	2026-09-04T14:05:08.0826898Z   java-version: 17
+build	UNKNOWN STEP	2026-09-04T14:05:08.0827140Z   cache: gradle
+build	UNKNOWN STEP	2026-09-04T14:05:08.0827368Z   java-package: jdk
+build	UNKNOWN STEP	2026-09-04T14:05:08.0827626Z   check-latest: false
+build	UNKNOWN STEP	2026-09-04T14:05:08.0827882Z   set-default: true
+build	UNKNOWN STEP	2026-09-04T14:05:08.0828128Z   verify-signature: false
+build	UNKNOWN STEP	2026-09-04T14:05:08.0828385Z   server-id: github
+build	UNKNOWN STEP	2026-09-04T14:05:08.0828632Z   server-username: GITHUB_ACTOR
+build	UNKNOWN STEP	2026-09-04T14:05:08.0828926Z   server-password: GITHUB_TOKEN
+build	UNKNOWN STEP	2026-09-04T14:05:08.0829204Z   overwrite-settings: true
+build	UNKNOWN STEP	2026-09-04T14:05:08.0829455Z   job-status: success
+build	UNKNOWN STEP	2026-09-04T14:05:08.0832024Z   token: ***
+build	UNKNOWN STEP	2026-09-04T14:05:08.0832288Z   show-download-progress: false
+build	UNKNOWN STEP	2026-09-04T14:05:08.0832591Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:08.2482475Z ##[group]Installed distributions
+build	UNKNOWN STEP	2026-09-04T14:05:08.2586204Z Resolved Java 17.0.20+1 from tool-cache
+build	UNKNOWN STEP	2026-09-04T14:05:08.2601190Z Setting Java 17.0.20+1 as the default
+build	UNKNOWN STEP	2026-09-04T14:05:08.2644609Z Creating toolchains.xml for JDK version 17 from temurin
+build	UNKNOWN STEP	2026-09-04T14:05:08.2731989Z Writing to /home/runner/.m2/toolchains.xml
+build	UNKNOWN STEP	2026-09-04T14:05:08.2754328Z 
+build	UNKNOWN STEP	2026-09-04T14:05:08.2774508Z Java configuration:
+build	UNKNOWN STEP	2026-09-04T14:05:08.2814410Z   Distribution: temurin
+build	UNKNOWN STEP	2026-09-04T14:05:08.2824443Z   Version: 17.0.20+1
+build	UNKNOWN STEP	2026-09-04T14:05:08.2867059Z   Path: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:08.2874151Z 
+build	UNKNOWN STEP	2026-09-04T14:05:08.2945870Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:08.3007751Z Creating settings.xml with server-id: github
+build	UNKNOWN STEP	2026-09-04T14:05:08.3014823Z Writing to /home/runner/.m2/settings.xml
+build	UNKNOWN STEP	2026-09-04T14:05:08.3016462Z Configured MAVEN_ARGS to include -ntp to suppress Maven transfer progress logs. Set 'show-download-progress: true' to keep the download progress output.
+build	UNKNOWN STEP	2026-09-04T14:05:08.5086418Z Cache hit for: setup-java-Linux-x64-gradle-90d51060965c5c895683ceb1490f6f8d34d4b8c51f12f7d9a4b5d8caa170f601
+build	UNKNOWN STEP	2026-09-04T14:05:08.6945131Z Received 6546610 of 6546610 (100.0%), 48.4 MBs/sec
+build	UNKNOWN STEP	2026-09-04T14:05:08.6951427Z Cache Size: ~6 MB (6546610 B)
+build	UNKNOWN STEP	2026-09-04T14:05:08.6995023Z [command]/usr/bin/tar -xf /home/runner/work/_temp/81c8a89a-4cc8-4b4c-9b26-8582becc68e5/cache.tzst -P -C /home/runner/work/pauta/pauta --use-compress-program unzstd
+build	UNKNOWN STEP	2026-09-04T14:05:09.0456598Z Cache restored successfully
+build	UNKNOWN STEP	2026-09-04T14:05:09.0475640Z Cache restored from key: setup-java-Linux-x64-gradle-90d51060965c5c895683ceb1490f6f8d34d4b8c51f12f7d9a4b5d8caa170f601
+build	UNKNOWN STEP	2026-09-04T14:05:09.1827294Z Cache hit for: setup-java-Linux-x64-gradle-wrapper-90aad88bddc2370c16035bf7f87f89b4d77c39059b21951e86e951ce87872c78
+build	UNKNOWN STEP	2026-09-04T14:05:09.2285894Z Received 550 of 550 (100.0%), 0.0 MBs/sec
+build	UNKNOWN STEP	2026-09-04T14:05:09.2288203Z Cache Size: ~0 MB (550 B)
+build	UNKNOWN STEP	2026-09-04T14:05:09.2310489Z [command]/usr/bin/tar -xf /home/runner/work/_temp/ff86f6f9-4970-44fe-9780-572157874aa9/cache.tzst -P -C /home/runner/work/pauta/pauta --use-compress-program unzstd
+build	UNKNOWN STEP	2026-09-04T14:05:09.2366898Z Cache restored successfully
+build	UNKNOWN STEP	2026-09-04T14:05:09.2370984Z gradle-wrapper cache restored from key: setup-java-Linux-x64-gradle-wrapper-90aad88bddc2370c16035bf7f87f89b4d77c39059b21951e86e951ce87872c78
+build	UNKNOWN STEP	2026-09-04T14:05:09.2703957Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:05:09.2705344Z ##[group]Run gradle/actions/setup-gradle@v4
+build	UNKNOWN STEP	2026-09-04T14:05:09.2705692Z with:
+build	UNKNOWN STEP	2026-09-04T14:05:09.2705917Z   cache-disabled: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2706176Z   cache-read-only: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2706435Z   cache-write-only: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2706885Z   cache-overwrite-existing: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2707177Z   cache-cleanup: on-success
+build	UNKNOWN STEP	2026-09-04T14:05:09.2707486Z   gradle-home-cache-includes: caches
+build	UNKNOWN STEP	notifications
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	2026-09-04T14:05:09.2707841Z   add-job-summary: always
+build	UNKNOWN STEP	2026-09-04T14:05:09.2708118Z   add-job-summary-as-pr-comment: never
+build	UNKNOWN STEP	2026-09-04T14:05:09.2708427Z   dependency-graph: disabled
+build	UNKNOWN STEP	2026-09-04T14:05:09.2708803Z   dependency-graph-report-dir: dependency-graph-reports
+build	UNKNOWN STEP	2026-09-04T14:05:09.2709196Z   dependency-graph-continue-on-failure: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.2709527Z   build-scan-publish: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2709794Z   validate-wrappers: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.2710067Z   allow-snapshot-wrappers: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2710368Z   gradle-home-cache-strict-match: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.2710688Z   workflow-job-context: null
+build	UNKNOWN STEP	2026-09-04T14:05:09.2713289Z   github-token: ***
+build	UNKNOWN STEP	2026-09-04T14:05:09.2713532Z env:
+build	UNKNOWN STEP	2026-09-04T14:05:09.2714008Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.2714582Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.2715016Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:05:09.2715256Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:09.8564828Z Gradle User Home already exists at /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.8586001Z Gradle User Home already exists: will not restore from cache.
+build	UNKNOWN STEP	2026-09-04T14:05:09.8602414Z Merged default JDK locations into /home/runner/.m2/toolchains.xml
+build	UNKNOWN STEP	2026-09-04T14:05:09.8796693Z ##[group]All Gradle Wrapper jars are valid
+build	UNKNOWN STEP	2026-09-04T14:05:09.8800536Z ✓ Found known Gradle Wrapper JAR files:
+build	UNKNOWN STEP	2026-09-04T14:05:09.8802793Z   cb0da6751c2b753a16ac168bb354870ebb1e162e9083f116729cec9c781156b8 gradle/wrapper/gradle-wrapper.jar
+build	UNKNOWN STEP	2026-09-04T14:05:09.8814123Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:09.8941916Z ##[group]Run chmod +x ./gradlew
+build	UNKNOWN STEP	2026-09-04T14:05:09.8942331Z ^[[36;1mchmod +x ./gradlew^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.8986317Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:05:09.8986641Z env:
+build	UNKNOWN STEP	2026-09-04T14:05:09.8987049Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.8987667Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.8988146Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:05:09.8988501Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.8988903Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.8989264Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.8989636Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.8990167Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.8990754Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:05:09.8991176Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.8991510Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:09.9152170Z ##[group]Run echo "***" | base64 --decode > "$RUNNER_TEMP/pauta.jks"
+build	UNKNOWN STEP	2026-09-04T14:05:09.9171289Z ^[[36;1mecho "***" | base64 --decode > "$RUNNER_TEMP/pauta.jks"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9206609Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:05:09.9206897Z env:
+build	UNKNOWN STEP	2026-09-04T14:05:09.9207244Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9207798Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9208213Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:05:09.9208493Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9208839Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9209153Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9209480Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9209946Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9210510Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:05:09.9210872Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.9211173Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:09.9393144Z ##[group]Run echo "RELEASE_STORE_FILE=$RUNNER_TEMP/pauta.jks" >> "$GITHUB_WORKSPACE/gradle.properties"
+build	UNKNOWN STEP	2026-09-04T14:05:09.9394524Z ^[[36;1mecho "RELEASE_STORE_FILE=$RUNNER_TEMP/pauta.jks" >> "$GITHUB_WORKSPACE/gradle.properties"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9395310Z ^[[36;1mecho "RELEASE_STORE_PASSWORD=***" >> "$GITHUB_WORKSPACE/gradle.properties"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9395892Z ^[[36;1mecho "RELEASE_KEY_ALIAS=***" >> "$GITHUB_WORKSPACE/gradle.properties"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9396476Z ^[[36;1mecho "RELEASE_KEY_PASSWORD=***" >> "$GITHUB_WORKSPACE/gradle.properties"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9434650Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:05:09.9434942Z env:
+build	UNKNOWN STEP	2026-09-04T14:05:09.9435306Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9435876Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9436330Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:05:09.9436656Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9437018Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9437371Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9437716Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9438214Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9438777Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:05:09.9439148Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.9439462Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:09.9531578Z ##[group]Run set +e
+build	UNKNOWN STEP	2026-09-04T14:05:09.9531877Z ^[[36;1mset +e^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9532108Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9532430Z ^[[36;1m./gradlew assembleRelease --no-daemon 2>&1 | tee build.log^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9532832Z ^[[36;1mEXIT_CODE=${PIPESTATUS[0]}^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9533119Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9533349Z ^[[36;1mif [ "$EXIT_CODE" -ne 0 ]; then^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9533652Z ^[[36;1m  echo ""^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9534437Z ^[[36;1m  echo "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9534815Z ^[[36;1m  echo "BUILD ANDROID FALHOU"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9535246Z ^[[36;1m  echo "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9535611Z ^[[36;1m  echo ""^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9535851Z ^[[36;1m  echo "MOTIVO:"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9536101Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9536323Z ^[[36;1m  grep -E \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9536764Z ^[[36;1m    'What went wrong:|Execution failed for task|e: |error:|ERROR|FAILURE:|Caused by:' \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9537236Z ^[[36;1m    build.log | head -20 || true^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9537527Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9537735Z ^[[36;1m  echo ""^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9537998Z ^[[36;1m  echo "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9538307Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9538517Z ^[[36;1m  exit "$EXIT_CODE"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9538771Z ^[[36;1mfi^[[0m
+build	UNKNOWN STEP	2026-09-04T14:05:09.9575828Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:05:09.9576118Z env:
+build	UNKNOWN STEP	2026-09-04T14:05:09.9576475Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9577038Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:05:09.9577460Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:05:09.9577744Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9578083Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9578396Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9578731Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:05:09.9579194Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:05:09.9579705Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:05:09.9580056Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:05:09.9580348Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:05:10.1587353Z Downloading https://services.gradle.org/distributions/gradle-8.13-bin.zip
+build	UNKNOWN STEP	2026-09-04T14:05:13.6361881Z .............10%.............20%.............30%.............40%.............50%.............60%.............70%.............80%.............90%.............100%
+build	UNKNOWN STEP	2026-09-04T14:05:14.9874469Z 
+build	UNKNOWN STEP	2026-09-04T14:05:14.9885587Z Welcome to Gradle 8.13!
+build	UNKNOWN STEP	2026-09-04T14:05:14.9900755Z 
+build	UNKNOWN STEP	2026-09-04T14:05:14.9901302Z Here are the highlights of this release:
+build	UNKNOWN STEP	2026-09-04T14:05:14.9902053Z  - Daemon JVM auto-provisioning
+build	UNKNOWN STEP	2026-09-04T14:05:14.9902884Z  - Enhancements for Scala plugin and JUnit testing
+build	UNKNOWN STEP	2026-09-04T14:05:14.9920037Z  - Improvements for build authors and plugin developers
+build	UNKNOWN STEP	2026-09-04T14:05:14.9920713Z 
+build	UNKNOWN STEP	2026-09-04T14:05:14.9926532Z For more details see https://docs.gradle.org/8.13/release-notes.html
+build	UNKNOWN STEP	2026-09-04T14:05:14.9927579Z 
+build	UNKNOWN STEP	2026-09-04T14:05:15.1838231Z To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/8.13/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+build	UNKNOWN STEP	2026-09-04T14:05:16.7845174Z Daemon will be stopped at the end of the build 
+build	UNKNOWN STEP	2026-09-04T14:06:21.2827765Z 
+build	UNKNOWN STEP	2026-09-04T14:06:21.2855051Z > Configure project :app
+build	UNKNOWN STEP	2026-09-04T14:06:21.2884730Z WARNING: The option setting 'android.experimental.lint.version=8.8.2' is experimental.
+build	UNKNOWN STEP	2026-09-04T14:06:31.4820152Z 
+build	UNKNOWN STEP	2026-09-04T14:06:31.4854719Z > Task :app:buildKotlinToolingMetadata
+build	UNKNOWN STEP	2026-09-04T14:06:31.4855653Z > Task :app:checkKotlinGradlePluginConfigurationErrors SKIPPED
+build	UNKNOWN STEP	2026-09-04T14:06:31.4888985Z > Task :app:preBuild UP-TO-DATE
+build	UNKNOWN STEP	2026-09-04T14:06:31.4904832Z > Task :app:preReleaseBuild UP-TO-DATE
+build	UNKNOWN STEP	2026-09-04T14:06:40.9829756Z > Task :app:generateReleaseResValues
+build	UNKNOWN STEP	2026-09-04T14:06:41.0818911Z > Task :app:dataBindingMergeDependencyArtifactsRelease
+build	UNKNOWN STEP	2026-09-04T14:06:41.0819380Z > Task :app:generateReleaseResources
+build	UNKNOWN STEP	2026-09-04T14:06:41.1845086Z > Task :app:injectCrashlyticsMappingFileIdRelease
+build	UNKNOWN STEP	2026-09-04T14:06:41.2822529Z > Task :app:extractReleaseVersionControlInfo
+build	UNKNOWN STEP	2026-09-04T14:06:41.2835292Z > Task :app:injectCrashlyticsVersionControlInfoRelease
+build	UNKNOWN STEP	2026-09-04T14:06:41.2858483Z > Task :app:processReleaseGoogleServices
+build	UNKNOWN STEP	2026-09-04T14:06:48.5832016Z > Task :app:generateReleaseBuildConfig
+build	UNKNOWN STEP	2026-09-04T14:06:48.9817785Z > Task :app:checkReleaseAarMetadata
+build	UNKNOWN STEP	2026-09-04T14:06:49.1004510Z > Task :app:mapReleaseSourceSetPaths
+build	UNKNOWN STEP	2026-09-04T14:06:49.3064732Z > Task :app:createReleaseCompatibleScreenManifests
+build	UNKNOWN STEP	2026-09-04T14:06:49.3262420Z > Task :app:extractDeepLinksRelease
+build	UNKNOWN STEP	2026-09-04T14:06:49.5021334Z > Task :app:mergeReleaseResources
+build	UNKNOWN STEP	2026-09-04T14:06:50.4818690Z 
+build	UNKNOWN STEP	2026-09-04T14:06:50.4844722Z > Task :app:processReleaseMainManifest
+build	UNKNOWN STEP	2026-09-04T14:06:50.4846118Z package="com.ap.pautaa" found in source AndroidManifest.xml: /home/runner/work/pauta/pauta/app/src/main/AndroidManifest.xml.
+build	UNKNOWN STEP	2026-09-04T14:06:50.4864954Z Setting the namespace via the package attribute in the source AndroidManifest.xml is no longer supported, and the value is ignored.
+build	UNKNOWN STEP	2026-09-04T14:06:50.4885134Z Recommendation: remove package="com.ap.pautaa" from the source AndroidManifest.xml: /home/runner/work/pauta/pauta/app/src/main/AndroidManifest.xml.
+build	UNKNOWN STEP	2026-09-04T14:06:50.7815334Z 
+build	UNKNOWN STEP	2026-09-04T14:06:50.7818522Z > Task :app:packageReleaseResources
+build	UNKNOWN STEP	2026-09-04T14:06:52.3838985Z > Task :app:processReleaseManifest
+build	UNKNOWN STEP	2026-09-04T14:06:52.4817617Z > Task :app:processReleaseManifestForPackage
+build	UNKNOWN STEP	2026-09-04T14:06:53.6818181Z > Task :app:parseReleaseLocalResources
+build	UNKNOWN STEP	2026-09-04T14:06:53.8854947Z > Task :app:javaPreCompileRelease
+build	UNKNOWN STEP	2026-09-04T14:06:54.8837385Z > Task :app:dataBindingGenBaseClassesRelease
+build	UNKNOWN STEP	2026-09-04T14:06:54.9854915Z > Task :app:extractProguardFiles
+build	UNKNOWN STEP	2026-09-04T14:06:54.9864754Z > Task :app:mergeReleaseJniLibFolders
+build	UNKNOWN STEP	2026-09-04T14:06:57.3818203Z > Task :app:processReleaseResources
+build	UNKNOWN STEP	2026-09-04T14:06:57.3844633Z > Task :app:mergeReleaseNativeLibs
+build	UNKNOWN STEP	2026-09-04T14:07:08.6832018Z 
+build	UNKNOWN STEP	2026-09-04T14:07:08.6834816Z > Task :app:stripReleaseDebugSymbols
+build	UNKNOWN STEP	2026-09-04T14:07:08.6864883Z Unable to strip the following libraries, packaging them as they are: libandroidx.graphics.path.so.
+build	UNKNOWN STEP	2026-09-04T14:07:08.6865718Z 
+build	UNKNOWN STEP	2026-09-04T14:07:08.6894578Z > Task :app:extractReleaseNativeSymbolTables
+build	UNKNOWN STEP	2026-09-04T14:07:08.6908654Z > Task :app:mergeReleaseNativeDebugMetadata NO-SOURCE
+build	UNKNOWN STEP	2026-09-04T14:07:15.4818819Z > Task :app:checkReleaseDuplicateClasses
+build	UNKNOWN STEP	2026-09-04T14:07:16.1824887Z > Task :app:mergeReleaseArtProfile
+build	UNKNOWN STEP	2026-09-04T14:07:16.1854228Z > Task :app:mergeReleaseStartupProfile
+build	UNKNOWN STEP	2026-09-04T14:07:16.1874372Z > Task :app:mergeReleaseShaders
+build	UNKNOWN STEP	2026-09-04T14:07:16.1894190Z > Task :app:compileReleaseShaders NO-SOURCE
+build	UNKNOWN STEP	2026-09-04T14:07:16.1894811Z > Task :app:generateReleaseAssets UP-TO-DATE
+build	UNKNOWN STEP	2026-09-04T14:07:16.9817553Z > Task :app:mergeReleaseAssets
+build	UNKNOWN STEP	2026-09-04T14:07:16.9819544Z > Task :app:compressReleaseAssets
+build	UNKNOWN STEP	2026-09-04T14:07:18.4825129Z > Task :app:convertLinkedResourcesToProtoRelease
+build	UNKNOWN STEP	2026-09-04T14:07:18.8824698Z > Task :app:collectReleaseDependencies
+build	UNKNOWN STEP	2026-09-04T14:07:19.2097480Z > Task :app:sdkReleaseDependencyData
+build	UNKNOWN STEP	2026-09-04T14:07:19.2098205Z > Task :app:validateSigningRelease
+build	UNKNOWN STEP	2026-09-04T14:07:19.2375256Z > Task :app:writeReleaseAppMetadata
+build	UNKNOWN STEP	2026-09-04T14:07:19.2595549Z > Task :app:writeReleaseSigningConfigVersions
+build	UNKNOWN STEP	2026-09-04T14:07:27.3841801Z > Task :app:kaptGenerateStubsReleaseKotlin
+build	UNKNOWN STEP	2026-09-04T14:07:42.2820689Z w: Kapt currently doesn't support language version 2.0+. Falling back to 1.9.
+build	UNKNOWN STEP	2026-09-04T14:07:54.5816504Z 
+build	UNKNOWN STEP	2026-09-04T14:07:54.5833102Z > Task :app:kaptReleaseKotlin
+build	UNKNOWN STEP	2026-09-04T14:08:24.5817054Z > Task :app:compileReleaseKotlin
+build	UNKNOWN STEP	2026-09-04T14:09:32.0818642Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/BackupManager.kt:3:8 'class ProgressDialog : AlertDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.0901024Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/BackupManager.kt:70:33 'class ProgressDialog : AlertDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.0921302Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/BackupManager.kt:863:26 'constructor(p0: Context!): ProgressDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.0967327Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/BackupManager.kt:864:13 'fun setMessage(p0: CharSequence!): Unit' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.0986080Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/BackupManager.kt:871:25 'fun setMessage(p0: CharSequence!): Unit' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1024625Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/MyApp.kt:31:18 'fun setPersistenceEnabled(p0: Boolean): FirebaseFirestoreSettings.Builder' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1037951Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/NotaRepository.kt:74:22 'fun fallbackToDestructiveMigration(): RoomDatabase.Builder<NotaDatabase>' is deprecated. Replace by overloaded version with parameter to indicate if all tables should be dropped or not.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1079768Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/PerfilDialogHelper.kt:3:8 'class ProgressDialog : AlertDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1100383Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/PerfilDialogHelper.kt:27:33 'class ProgressDialog : AlertDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1150295Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/PerfilDialogHelper.kt:28:9 'constructor(p0: Context!): ProgressDialog' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1156082Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/PerfilDialogHelper.kt:51:31 Condition is always 'false'.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1187537Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/PerfilDialogHelper.kt:56:24 'fun setMessage(p0: CharSequence!): Unit' is deprecated. Deprecated in Java.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1224112Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/navigation/TopBar.kt:378:45 'val Icons.Outlined.HelpOutline: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.HelpOutline.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1240012Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/alunos/AlunosScreen.kt:64:28 'val LocalClipboardManager: ProvidableCompositionLocal<ClipboardManager>' is deprecated. Use LocalClipboard instead which supports suspend functions.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1265977Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/escola/EscolaScreen.kt:377:55 'val Icons.Outlined.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.MenuBook.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1302690Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/escola/EscolaViewModel.kt:188:52 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.Map<kotlin.String, kotlin.Any>'.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1337567Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/escola/escola/EscolaManager.kt:54:44 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.Map<kotlin.String, kotlin.Any>'.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1340468Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/escola/escola/EscolaManager.kt:99:43 Unchecked cast of 'kotlin.Any?' to 'kotlin.collections.List<kotlin.collections.Map<kotlin.String, kotlin.Any>>'.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1361404Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/home/HomeComponents.kt:206:55 'val Icons.Outlined.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.MenuBook.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1382396Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/home/HomeComponents.kt:208:49 'val Icons.Outlined.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Assignment.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1397629Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/home/HomeComponents.kt:244:55 'val Icons.Outlined.MenuBook: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.MenuBook.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1418499Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/home/HomeComponents.kt:246:49 'val Icons.Outlined.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.Assignment.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1439324Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/pauta/PautaBrancoPdfGenerator.kt:466:22 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes MenuAnchorType and enabled parameters.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1460921Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/AnosServicoBottomSheet.kt:66:47 'fun properties(securePolicy: SecureFlagPolicy = ..., isFocusable: Boolean = ..., shouldDismissOnBackPress: Boolean = ...): ModalBottomSheetProperties' is deprecated. 'isFocusable' param is no longer used. Use value without this parameter.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1483317Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/CertificadosBottomSheet.kt:54:47 'fun properties(securePolicy: SecureFlagPolicy = ..., isFocusable: Boolean = ..., shouldDismissOnBackPress: Boolean = ...): ModalBottomSheetProperties' is deprecated. 'isFocusable' param is no longer used. Use value without this parameter.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1491305Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/EspecialidadeBottomSheet.kt:151:34 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes MenuAnchorType and enabled parameters.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1511249Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/ExpandableBottomSheet.kt:55:47 'fun properties(securePolicy: SecureFlagPolicy = ..., isFocusable: Boolean = ..., shouldDismissOnBackPress: Boolean = ...): ModalBottomSheetProperties' is deprecated. 'isFocusable' param is no longer used. Use value without this parameter.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1533000Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/FullScreenBottomSheet.kt:47:47 'fun properties(securePolicy: SecureFlagPolicy = ..., isFocusable: Boolean = ..., shouldDismissOnBackPress: Boolean = ...): ModalBottomSheetProperties' is deprecated. 'isFocusable' param is no longer used. Use value without this parameter.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1551479Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/InteracaoCard.kt:67:35 'val Icons.Outlined.TrendingUp: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Outlined.TrendingUp.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1572176Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/LoginScreen.kt:244:17 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1591773Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/LoginScreen.kt:251:17 'fun Divider(modifier: Modifier = ..., thickness: Dp = ..., color: Color = ...): Unit' is deprecated. Renamed to HorizontalDivider.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1615862Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovaAvaliacaoBottomSheet.kt:87:51 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1633048Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovaAvaliacaoBottomSheet.kt:163:43 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1650688Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovaAvaliacaoBottomSheet.kt:191:34 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes MenuAnchorType and enabled parameters.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1672225Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovaZipBottomSheet.kt:149:22 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes MenuAnchorType and enabled parameters.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1692596Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovoCertificadoBottomSheet.kt:87:51 'val Icons.Filled.ArrowBack: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.ArrowBack.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1713923Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/NovoCertificadoBottomSheet.kt:201:34 'fun Modifier.menuAnchor(): Modifier' is deprecated. Use overload that takes MenuAnchorType and enabled parameters.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1717190Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/PerfilScreen.kt:579:63 'val Icons.Filled.Assignment: ImageVector' is deprecated. Use the AutoMirrored version at Icons.AutoMirrored.Filled.Assignment.
+build	UNKNOWN STEP	2026-09-04T14:09:32.1741671Z w: file:///home/runner/work/pauta/pauta/app/src/main/java/com/ap/pautaa/main/ui/perfil/UltimaAvaliacaoBottomSheet.kt:57:47 'fun properties(securePolicy: SecureFlagPolicy = ..., isFocusable: Boolean = ..., shouldDismissOnBackPress: Boolean = ...): ModalBottomSheetProperties' is deprecated. 'isFocusable' param is no longer used. Use value without this parameter.
+build	UNKNOWN STEP	2026-09-04T14:09:39.5816910Z 
+build	UNKNOWN STEP	2026-09-04T14:09:39.5835048Z > Task :app:compileReleaseJavaWithJavac
+build	UNKNOWN STEP	2026-09-04T14:09:40.6819663Z > Task :app:generateReleaseLintVitalReportModel
+build	UNKNOWN STEP	2026-09-04T14:09:46.0825026Z > Task :app:expandReleaseArtProfileWildcards
+build	UNKNOWN STEP	2026-09-04T14:09:46.0864252Z > Task :app:mergeReleaseGeneratedProguardFiles
+build	UNKNOWN STEP	2026-09-04T14:09:46.1831197Z > Task :app:processReleaseJavaRes
+build	UNKNOWN STEP	2026-09-04T14:09:51.5818247Z > Task :app:mergeReleaseJavaResource
+build	UNKNOWN STEP	2026-09-04T14:10:10.6824924Z > Task :app:lintVitalAnalyzeRelease
+build	UNKNOWN STEP	2026-09-04T14:10:21.5829462Z > Task :app:minifyReleaseWithR8
+build	UNKNOWN STEP	2026-09-04T14:12:44.4854950Z > Task :app:lintVitalReportRelease
+build	UNKNOWN STEP	2026-09-04T14:12:44.5279316Z > Task :app:lintVitalRelease
+build	UNKNOWN STEP	2026-09-04T14:18:22.8824852Z > Task :app:compileReleaseArtProfile
+build	UNKNOWN STEP	2026-09-04T14:18:25.3825238Z > Task :app:uploadCrashlyticsMappingFileRelease
+build	UNKNOWN STEP	2026-09-04T14:18:34.9816914Z > Task :app:shrinkReleaseRes
+build	UNKNOWN STEP	2026-09-04T14:18:35.6834560Z > Task :app:convertShrunkResourcesToBinaryRelease
+build	UNKNOWN STEP	2026-09-04T14:18:36.5824902Z > Task :app:optimizeReleaseResources
+build	UNKNOWN STEP	2026-09-04T14:18:37.7821522Z > Task :app:packageRelease
+build	UNKNOWN STEP	2026-09-04T14:18:37.7854496Z > Task :app:createReleaseApkListingFileRedirect
+build	UNKNOWN STEP	2026-09-04T14:18:37.7874581Z > Task :app:assembleRelease
+build	UNKNOWN STEP	2026-09-04T14:18:37.8855312Z gradle/actions: Writing build results to /home/runner/work/_temp/.gradle-actions/build-results/build-1788530722091.json
+build	UNKNOWN STEP	2026-09-04T14:18:37.8914118Z 
+build	UNKNOWN STEP	2026-09-04T14:18:37.8935012Z [Incubating] Problems report is available at: file:///home/runner/work/pauta/pauta/build/reports/problems/problems-report.html
+build	UNKNOWN STEP	2026-09-04T14:18:37.8954091Z 
+build	UNKNOWN STEP	2026-09-04T14:18:37.8974542Z Deprecated Gradle features were used in this build, making it incompatible with Gradle 9.0.
+build	UNKNOWN STEP	2026-09-04T14:18:37.8994077Z 
+build	UNKNOWN STEP	2026-09-04T14:18:37.9024892Z You can use '--warning-mode all' to show the individual deprecation warnings and determine if they come from your own scripts or plugins.
+build	UNKNOWN STEP	2026-09-04T14:18:37.9036433Z 
+build	UNKNOWN STEP	2026-09-04T14:18:37.9055157Z For more on this, please refer to https://docs.gradle.org/8.13/userguide/command_line_interface.html#sec:command_line_warnings in the Gradle documentation.
+build	UNKNOWN STEP	2026-09-04T14:18:37.9074529Z 
+build	UNKNOWN STEP	2026-09-04T14:18:37.9085881Z BUILD SUCCESSFUL in 13m 27s
+build	UNKNOWN STEP	2026-09-04T14:18:37.9094386Z 59 actionable tasks: 59 executed
+build	UNKNOWN STEP	2026-09-04T14:18:38.3019914Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:18:38.3021299Z ##[group]Run actions/upload-artifact@v4
+build	UNKNOWN STEP	2026-09-04T14:18:38.3021615Z with:
+build	UNKNOWN STEP	2026-09-04T14:18:38.3021836Z   name: app-release
+build	UNKNOWN STEP	2026-09-04T14:18:38.3022095Z   path: app/build/outputs/apk/release/*.apk
+build	UNKNOWN STEP	2026-09-04T14:18:38.3022414Z   if-no-files-found: error
+build	UNKNOWN STEP	2026-09-04T14:18:38.3022679Z   compression-level: 6
+build	UNKNOWN STEP	2026-09-04T14:18:38.3022914Z   overwrite: false
+build	UNKNOWN STEP	2026-09-04T14:18:38.3023153Z   include-hidden-files: false
+build	UNKNOWN STEP	2026-09-04T14:18:38.3023406Z env:
+build	UNKNOWN STEP	2026-09-04T14:18:38.3024023Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:38.3024638Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:38.3025050Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:18:38.3025327Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:18:38.3025657Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:38.3025974Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:18:38.3026287Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:18:38.3026750Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:38.3027272Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:18:38.3027610Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:18:38.3027902Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:18:38.6125872Z (node:2623) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+build	UNKNOWN STEP	2026-09-04T14:18:38.6127631Z (Use `node --trace-deprecation ...` to show where the warning was created)
+build	UNKNOWN STEP	2026-09-04T14:18:38.6262699Z With the provided path, there will be 1 file uploaded
+build	UNKNOWN STEP	2026-09-04T14:18:38.6285204Z Artifact name is valid!
+build	UNKNOWN STEP	2026-09-04T14:18:38.6294142Z Root directory input is valid!
+build	UNKNOWN STEP	2026-09-04T14:18:38.8465965Z Beginning upload of artifact content to blob storage
+build	UNKNOWN STEP	2026-09-04T14:18:39.1839199Z (node:2623) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+build	UNKNOWN STEP	2026-09-04T14:18:39.3295491Z Uploaded bytes 8388608
+build	UNKNOWN STEP	2026-09-04T14:18:39.3654953Z Uploaded bytes 9189262
+build	UNKNOWN STEP	2026-09-04T14:18:39.3816410Z Finished uploading artifact content to blob storage!
+build	UNKNOWN STEP	2026-09-04T14:18:39.3818076Z SHA256 digest of uploaded artifact zip is dc12e8bc97d9024a12d178db5e7493f1e9024429a9816056b67578abc9425d87
+build	UNKNOWN STEP	2026-09-04T14:18:39.3819588Z Finalizing artifact upload
+build	UNKNOWN STEP	2026-09-04T14:18:39.6113604Z Artifact app-release.zip successfully finalized. Artifact ID 9940622045
+build	UNKNOWN STEP	2026-09-04T14:18:39.6115671Z Artifact app-release has been successfully uploaded! Final size is 9189262 bytes. Artifact ID is 9940622045
+build	UNKNOWN STEP	2026-09-04T14:18:39.6122359Z Artifact download URL: https://github.com/alexandrefrancisco01998-beep/pauta/actions/runs/33881675764/artifacts/9940622045
+build	UNKNOWN STEP	2026-09-04T14:18:39.6316082Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:18:39.6317442Z ##[group]Run softprops/action-gh-release@v2
+build	UNKNOWN STEP	2026-09-04T14:18:39.6317774Z with:
+build	UNKNOWN STEP	2026-09-04T14:18:39.6318009Z   tag_name: build-323
+build	UNKNOWN STEP	2026-09-04T14:18:39.6318271Z   name: APK Build 323
+build	UNKNOWN STEP	2026-09-04T14:18:39.6318545Z   files: app/build/outputs/apk/release/*.apk
+build	UNKNOWN STEP	2026-09-04T14:18:39.6318887Z   generate_release_notes: true
+build	UNKNOWN STEP	2026-09-04T14:18:39.6319178Z   overwrite_files: true
+build	UNKNOWN STEP	2026-09-04T14:18:39.6321738Z   token: ***
+build	UNKNOWN STEP	2026-09-04T14:18:39.6321972Z env:
+build	UNKNOWN STEP	2026-09-04T14:18:39.6322308Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:39.6322881Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:39.6323314Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:18:39.6323597Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:18:39.6324125Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:39.6324459Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:18:39.6324810Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:18:39.6325286Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:39.6325813Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:18:39.6326187Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:18:39.6326495Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:18:40.0035538Z 👩‍🏭 Creating new GitHub release for tag build-323...
+build	UNKNOWN STEP	2026-09-04T14:18:41.8585603Z Release 382785431 is not yet discoverable by tag build-323, retrying... (2 retries remaining)
+build	UNKNOWN STEP	2026-09-04T14:18:43.9141149Z ⬆️ Uploading app-release.apk...
+build	UNKNOWN STEP	2026-09-04T14:18:44.9521883Z ✅ Uploaded app-release.apk
+build	UNKNOWN STEP	2026-09-04T14:18:44.9522861Z Finalizing release...
+build	UNKNOWN STEP	2026-09-04T14:18:45.7041738Z Getting assets list...
+build	UNKNOWN STEP	2026-09-04T14:18:45.8025757Z 🎉 Release ready at https://github.com/alexandrefrancisco01998-beep/pauta/releases/tag/build-323
+build	UNKNOWN STEP	2026-09-04T14:18:45.8178578Z ##[group]Run echo "========================================"
+build	UNKNOWN STEP	2026-09-04T14:18:45.8179063Z ^[[36;1mecho "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8179456Z ^[[36;1mecho "📨 ENVIANDO NOTIFICAÇÃO DE SUCESSO"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8179844Z ^[[36;1mecho "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8180166Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8180429Z ^[[36;1mcurl --fail --silent --show-error \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8180761Z ^[[36;1m  -X POST \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8181245Z ^[[36;1m  "https://api.telegram.org/bot8811836046:AAHLA_DBJSYdjNM_0CbK1O12lzTX8lwU35o/sendMessage" \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8181822Z ^[[36;1m  --data-urlencode "chat_id=6298420571" \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8182199Z ^[[36;1m  --data-urlencode "text=$TELEGRAM_TEXT"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:45.8294754Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:18:45.8295067Z env:
+build	UNKNOWN STEP	2026-09-04T14:18:45.8295433Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:45.8296051Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:45.8296703Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:18:45.8296989Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:18:45.8297342Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:45.8297678Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:18:45.8298015Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:18:45.8298495Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:45.8299025Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:18:45.8299391Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:18:45.8300652Z   TELEGRAM_TEXT: ✅ BUILD CONCLUÍDO COM SUCESSO!
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	📱 Pauta App
+build	UNKNOWN STEP	📦 Repo: alexandrefrancisco01998-beep/pauta
+build	UNKNOWN STEP	🔀 Branch: master
+build	UNKNOWN STEP	🏷️ Build: #323
+build	UNKNOWN STEP	📝 Commit: eb298b85335b9f02ced3d8afe0fa4cf036ecad0c
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	📲 APK disponível:
+build	UNKNOWN STEP	🔗 https://github.com/alexandrefrancisco01998-beep/pauta/actions/runs/33881675764
+build	UNKNOWN STEP	
+build	UNKNOWN STEP	2026-09-04T14:18:45.8301906Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:18:45.8369751Z ========================================
+build	UNKNOWN STEP	2026-09-04T14:18:45.8371190Z 📨 ENVIANDO NOTIFICAÇÃO DE SUCESSO
+build	UNKNOWN STEP	2026-09-04T14:18:45.8371716Z ========================================
+build	UNKNOWN STEP	2026-09-04T14:18:46.1962301Z {"ok":true,"result":{"message_id":269,"from":{"id":8811836046,"is_bot":true,"first_name":"Pauta Build Bot","username":"Pauta_Build_Bot"},"chat":{"id":6298420571,"first_name":"Alexandre","last_name":"Francisco","username":"AlexandreFranciscoCaetano","type":"private"},"date":1788531526,"text":"\u2705 BUILD CONCLU\u00cdDO COM SUCESSO!\n\n\ud83d\udcf1 Pauta App\n\ud83d\udce6 Repo: alexandrefrancisco01998-beep/pauta\n\ud83d\udd00 Branch: master\n\ud83c\udff7\ufe0f Build: #323\n\ud83d\udcdd Commit: eb298b85335b9f02ced3d8afe0fa4cf036ecad0c\n\n\ud83d\udcf2 APK dispon\u00edvel:\n\ud83d\udd17 https://github.com/alexandrefrancisco01998-beep/pauta/actions/runs/33881675764","entities":[{"offset":198,"length":78,"type":"url"}],"link_preview_options":{"url":"https://github.com/alexandrefrancisco01998-beep/pauta/actions/runs/33881675764"}}}
+build	UNKNOWN STEP	2026-09-04T14:18:46.2014308Z ##[group]Run echo "========================================"
+build	UNKNOWN STEP	2026-09-04T14:18:46.2015118Z ^[[36;1mecho "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2015774Z ^[[36;1mecho "📨 ENVIANDO APK PARA TELEGRAM"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2016385Z ^[[36;1mecho "========================================"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2016919Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2017580Z ^[[36;1mAPK_PATH=$(find app/build/outputs/apk/release -type f -name "*.apk" | head -1)^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2018393Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2018794Z ^[[36;1mif [ -f "$APK_PATH" ]; then^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2019361Z ^[[36;1m  curl --fail --silent --show-error \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2019952Z ^[[36;1m    -F "chat_id=6298420571" \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2020511Z ^[[36;1m    -F "document=@$APK_PATH" \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2021323Z ^[[36;1m    -F "caption=📲 APK Build #323 - eb298b85335b9f02ced3d8afe0fa4cf036ecad0c" \^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2022512Z ^[[36;1m    "https://api.telegram.org/bot8811836046:AAHLA_DBJSYdjNM_0CbK1O12lzTX8lwU35o/sendDocument"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2023443Z ^[[36;1m^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2024195Z ^[[36;1m  echo "✅ APK ENVIADO COM SUCESSO!"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2024753Z ^[[36;1melse^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2025184Z ^[[36;1m  echo "❌ APK NÃO ENCONTRADO!"^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2025719Z ^[[36;1m  exit 1^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2026106Z ^[[36;1mfi^[[0m
+build	UNKNOWN STEP	2026-09-04T14:18:46.2077832Z shell: /usr/bin/bash -e {0}
+build	UNKNOWN STEP	2026-09-04T14:18:46.2078336Z env:
+build	UNKNOWN STEP	2026-09-04T14:18:46.2078872Z   JAVA_HOME: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:46.2079478Z   JAVA_HOME_17_X64: /opt/hostedtoolcache/Java_Temurin-Hotspot_jdk/17.0.20-1/x64
+build	UNKNOWN STEP	2026-09-04T14:18:46.2079923Z   MAVEN_ARGS: -ntp
+build	UNKNOWN STEP	2026-09-04T14:18:46.2080203Z   GRADLE_ACTION_ID: gradle/actions/setup-gradle
+build	UNKNOWN STEP	2026-09-04T14:18:46.2080568Z   GRADLE_USER_HOME: /home/runner/.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:46.2080898Z   GRADLE_BUILD_ACTION_SETUP_COMPLETED: true
+build	UNKNOWN STEP	2026-09-04T14:18:46.2081247Z   GRADLE_BUILD_ACTION_CACHE_RESTORED: true
+build	UNKNOWN STEP	2026-09-04T14:18:46.2081972Z   DEVELOCITY_INJECTION_INIT_SCRIPT_NAME: gradle-actions.inject-develocity.init.gradle
+build	UNKNOWN STEP	2026-09-04T14:18:46.2082494Z   DEVELOCITY_INJECTION_CUSTOM_VALUE: gradle-actions
+build	UNKNOWN STEP	2026-09-04T14:18:46.2082847Z   GITHUB_DEPENDENCY_GRAPH_ENABLED: false
+build	UNKNOWN STEP	2026-09-04T14:18:46.2083144Z ##[endgroup]
+build	UNKNOWN STEP	2026-09-04T14:18:46.2164478Z ========================================
+build	UNKNOWN STEP	2026-09-04T14:18:46.2165561Z 📨 ENVIANDO APK PARA TELEGRAM
+build	UNKNOWN STEP	2026-09-04T14:18:46.2166312Z ========================================
+build	UNKNOWN STEP	2026-09-04T14:18:47.9656940Z {"ok":true,"result":{"message_id":270,"from":{"id":8811836046,"is_bot":true,"first_name":"Pauta Build Bot","username":"Pauta_Build_Bot"},"chat":{"id":6298420571,"first_name":"Alexandre","last_name":"Francisco","username":"AlexandreFranciscoCaetano","type":"private"},"date":1788531527,"document":{"file_name":"app-release.apk","mime_type":"application/octet-stream","file_id":"BQACAgQAAxkDAAIBDmqa00fviZ4HhXckaeam-8jhSpk-AAJqHQACDAvZUOTIio-mg3a7PQQ","file_unique_id":"AgADah0AAgwL2VA","file_size":11546570},"caption":"\ud83d\udcf2 APK Build #323 - eb298b85335b9f02ced3d8afe0fa4cf036ecad0c"}}✅ APK ENVIADO COM SUCESSO!
+build	UNKNOWN STEP	2026-09-04T14:18:47.9833248Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:18:47.9834883Z Post job cleanup.
+build	UNKNOWN STEP	2026-09-04T14:18:48.2678108Z In post-action step
+build	UNKNOWN STEP	2026-09-04T14:18:48.2691046Z Cache will not be saved: not restored in main action step.
+build	UNKNOWN STEP	2026-09-04T14:18:48.2697945Z Generating Job Summary
+build	UNKNOWN STEP	2026-09-04T14:18:48.2727922Z Completed post-action step
+build	UNKNOWN STEP	2026-09-04T14:18:48.2907989Z Post job cleanup.
+build	UNKNOWN STEP	2026-09-04T14:18:48.4594363Z Cache hit occurred on the gradle-wrapper primary key setup-java-Linux-x64-gradle-wrapper-90aad88bddc2370c16035bf7f87f89b4d77c39059b21951e86e951ce87872c78, not saving cache.
+build	UNKNOWN STEP	2026-09-04T14:18:48.4597287Z Cache hit occurred on the primary key setup-java-Linux-x64-gradle-90d51060965c5c895683ceb1490f6f8d34d4b8c51f12f7d9a4b5d8caa170f601, not saving cache.
+build	UNKNOWN STEP	2026-09-04T14:18:48.4938040Z Node 20 is being deprecated. This workflow is running with Node 24 by default. If you need to temporarily use Node 20, you can set the ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION=true environment variable. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+build	UNKNOWN STEP	2026-09-04T14:18:48.4940307Z Post job cleanup.
+build	UNKNOWN STEP	2026-09-04T14:18:48.6237911Z [command]/usr/bin/git version
+build	UNKNOWN STEP	2026-09-04T14:18:48.6312201Z git version 2.55.0
+build	UNKNOWN STEP	2026-09-04T14:18:48.6394793Z Temporarily overriding HOME='/home/runner/work/_temp/a44d65b1-e819-4acf-a051-d512191b83f4' before making global git config changes
+build	UNKNOWN STEP	2026-09-04T14:18:48.6396375Z Adding repository directory to the temporary git global config as a safe directory
+build	UNKNOWN STEP	2026-09-04T14:18:48.6397955Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/pauta/pauta
+build	UNKNOWN STEP	2026-09-04T14:18:48.6467431Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+build	UNKNOWN STEP	2026-09-04T14:18:48.6539726Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+build	UNKNOWN STEP	2026-09-04T14:18:48.6935351Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+build	UNKNOWN STEP	2026-09-04T14:18:48.6980999Z http.https://github.com/.extraheader
+build	UNKNOWN STEP	2026-09-04T14:18:48.7025247Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+build	UNKNOWN STEP	2026-09-04T14:18:48.7041113Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+build	UNKNOWN STEP	2026-09-04T14:18:48.7434902Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+build	UNKNOWN STEP	2026-09-04T14:18:48.7502293Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+build	UNKNOWN STEP	2026-09-04T14:18:48.8071073Z Cleaning up orphan processes
+build	UNKNOWN STEP	2026-09-04T14:18:48.8308819Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/upload-artifact@v4, gradle/actions/setup-gradle@v4, softprops/action-gh-release@v2. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
