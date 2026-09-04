@@ -38,9 +38,9 @@ jobs:
       - name: Restaurar keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 --decode > "$RUNNER_TEMP/pauta.jks"
-
       - name: Configurar assinatura
         run: |
+          printf '\n' >> "$GITHUB_WORKSPACE/gradle.properties"
           echo "RELEASE_STORE_FILE=$RUNNER_TEMP/pauta.jks" >> "$GITHUB_WORKSPACE/gradle.properties"
           echo "RELEASE_STORE_PASSWORD=${{ secrets.RELEASE_STORE_PASSWORD }}" >> "$GITHUB_WORKSPACE/gradle.properties"
           echo "RELEASE_KEY_ALIAS=${{ secrets.RELEASE_KEY_ALIAS }}" >> "$GITHUB_WORKSPACE/gradle.properties"
