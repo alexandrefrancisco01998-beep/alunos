@@ -1,14 +1,11 @@
 package com.imobiliario.aluno.ui.perfil
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.BorderStroke
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -53,12 +50,13 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -95,9 +93,9 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
@@ -111,18 +109,18 @@ import com.imobiliario.aluno.ui.theme.CapulanaGreen
 import com.imobiliario.aluno.ui.theme.CapulanaRed
 import com.imobiliario.aluno.ui.theme.Spacing
 import java.text.SimpleDateFormat
+import kotlinx.coroutines.launch
 import java.util.Date
 import java.util.Locale
 import kotlin.math.roundToInt
-import kotlinx.coroutines.launch
 
 // ---------------------------------------------------------------------------
-// Aba ativa — controla o que é exibido no corpo e no título da TopBar.
-// Não existe navegação nova: é só um enum de estado local.
+// Aba ativa — controla o que é exibido no corpo e no título da TopBar[cite: 1].
+// Não existe navegação nova: é só um enum de estado local[cite: 1].
 // ---------------------------------------------------------------------------
 private enum class Aba { INICIO, NOTIFICACOES, DETALHES }
 
-// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação.
+// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação[cite: 1].
 private data class DetalhesAtivos(
     val disciplina: DisciplinaComNotas,
     val alunoNome: String,
@@ -130,7 +128,7 @@ private data class DetalhesAtivos(
     val turmaNome: String
 )
 
-// Larguras das colunas da tabela de notas
+// Larguras das colunas da tabela de notas[cite: 1]
 private val LarguraColunaTrimestre = 56.dp
 private val LarguraColunaDado = 64.dp
 private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS", "AT", "MT")
@@ -279,18 +277,13 @@ fun PerfilScreen(
                 ) { aba ->
                     when (aba) {
                         Aba.INICIO -> {
+                            // Observa a KClass do estado para evitar que a troca no termo de busca acione o fade[cite: 1]
                             AnimatedContent(
-                                targetState = uiState,
-                                transitionSpec = {
-                                    if (initialState::class != targetState::class) {
-                                        fadeIn(tween(220)) togetherWith fadeOut(tween(140))
-                                    } else {
-                                        EnterTransition.None togetherWith ExitTransition.None
-                                    }
-                                },
+                                targetState = uiState::class,
+                                transitionSpec = { fadeIn(tween(220)) togetherWith fadeOut(tween(140)) },
                                 label = "perfilState"
-                            ) { state ->
-                                when (state) {
+                            ) { _ ->
+                                when (val state = uiState) {
                                     is PerfilUiState.Carregando -> LoadingState()
                                     is PerfilUiState.Erro -> ErroState(state.mensagem)
                                     is PerfilUiState.Sucesso -> {
@@ -440,9 +433,7 @@ private fun InicioContent(
         if (disciplinasFiltradas.isEmpty()) {
             item {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.xl),
+                    modifier = Modifier.fillMaxWidth().padding(Spacing.xl),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
@@ -550,20 +541,13 @@ private fun NotificacoesContent(
 
         when {
             carregando -> item {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.xl),
-                    contentAlignment = Alignment.Center
-                ) {
+                Box(Modifier.fillMaxWidth().padding(Spacing.xl), contentAlignment = Alignment.Center) {
                     CircularProgressIndicator(strokeWidth = 3.dp)
                 }
             }
             notificacoes.isEmpty() -> item {
                 Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.xl),
+                    modifier = Modifier.fillMaxWidth().padding(Spacing.xl),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Icon(
@@ -800,23 +784,10 @@ private fun DetalhesContent(
                                                 else -> CapulanaGreen
                                             }
                                             Surface(shape = RoundedCornerShape(8.dp), color = cor.copy(alpha = 0.12f)) {
-                                                Text(
-                                                    valor,
-                                                    style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"),
-                                                    fontWeight = FontWeight.Bold,
-                                                    color = cor,
-                                                    textAlign = TextAlign.Center,
-                                                    modifier = Modifier.padding(horizontal = Spacing.sm, vertical = 2.dp)
-                                                )
+                                                Text(valor, style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"), fontWeight = FontWeight.Bold, color = cor, textAlign = TextAlign.Center, modifier = Modifier.padding(horizontal = Spacing.sm, vertical = 2.dp))
                                             }
                                         } else {
-                                            Text(
-                                                valor,
-                                                style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"),
-                                                fontWeight = if (index == 0 || index == 4) FontWeight.SemiBold else FontWeight.Normal,
-                                                textAlign = TextAlign.Center,
-                                                color = MaterialTheme.colorScheme.onSurface
-                                            )
+                                            Text(valor, style = MaterialTheme.typography.bodyMedium.copy(fontFeatureSettings = "tnum"), fontWeight = if (index == 0 || index == 4) FontWeight.SemiBold else FontWeight.Normal, textAlign = TextAlign.Center, color = MaterialTheme.colorScheme.onSurface)
                                         }
                                     }
                                     if (index != TitulosColunas.lastIndex) {
@@ -842,9 +813,7 @@ private fun DetalhesContent(
                 elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
             ) {
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(Spacing.md),
+                    modifier = Modifier.fillMaxWidth().padding(Spacing.md),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
@@ -877,9 +846,7 @@ private fun LoadingState() {
 @Composable
 private fun ErroState(mensagem: String) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(Spacing.xl),
+        modifier = Modifier.fillMaxSize().padding(Spacing.xl),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -889,6 +856,7 @@ private fun ErroState(mensagem: String) {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun PesquisarDisciplinasField(
     valor: String,
@@ -957,9 +925,7 @@ private fun DisciplinaCard(disciplina: DisciplinaComNotas, onClick: () -> Unit, 
         modifier = modifier
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Spacing.md, vertical = Spacing.sm + 6.dp),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.md, vertical = Spacing.sm + 6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Surface(shape = CircleShape, color = visual.corFundo, modifier = Modifier.size(48.dp)) {
@@ -1054,9 +1020,7 @@ private fun InicioBottomBar(
             .padding(horizontal = Spacing.lg, vertical = Spacing.sm)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = Spacing.sm, vertical = Spacing.xs),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Spacing.sm, vertical = Spacing.xs),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
