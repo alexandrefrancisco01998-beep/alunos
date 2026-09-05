@@ -161,9 +161,7 @@ class AlunoRepository(
             alunoNome = this["alunoNome"] as? String ?: "",
             alunoNumero = (this["alunoNumero"] as? Number)?.toInt() ?: 0,
             turmaNome = this["turmaNome"] as? String ?: "",
-            // A Cloud Function consultarNotasPorCodigo ainda não devolve
-            // esse campo — combinado deixar vazio por enquanto.
-            classeNome = "",
+            classeNome = this["classeNome"] as? String ?: "",
             disciplinas = disciplinas
         )
     }

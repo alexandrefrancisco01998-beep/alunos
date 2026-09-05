@@ -99,6 +99,19 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
      */
     val fotoPerfilUrl: String? get() = authRepository.usuarioAtual?.photoUrl?.toString()
 
+    /** Nome de exibição da conta logada (Google → displayName; e-mail → parte antes do @). */
+    val nomeUsuario: String
+        get() {
+            val user = authRepository.usuarioAtual ?: return ""
+            return user.displayName?.takeIf { it.isNotBlank() }
+                ?: user.email?.substringBefore("@")
+                ?: ""
+        }
+
+    /** E-mail da conta logada, ou string vazia quando não disponível. */
+    val emailUsuario: String
+        get() = authRepository.usuarioAtual?.email ?: ""
+
     /**
      * Carrega a tela em modo "cache-first": mostra o que já está salvo
      * localmente (perfil + disciplinas da última consulta bem-sucedida)
@@ -136,14 +149,24 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
             // 2) Atualiza em segundo plano a partir do backend.
             when (val resultado = repository.consultarPorCodigo(codigo)) {
                 is ConsultaResult.Sucesso -> {
-                    _uiState.value = PerfilUiState.Sucesso(perfil, resultado.dados, offline = false)
-                    // Notificações de nota alterada não são mais geradas no
-                    // cliente comparando cache local: quem cria a
-                    // notificação (no Firestore, `notificacoesAluno`) é a
-                    // Cloud Function `lancarNotasIndividuais` no momento em
-                    // que o professor lança a nota — fonte única, sem
-                    // depender deste dispositivo já ter aberto o app antes.
-                    database.disciplinaDao().substituir(codigo, resultado.dados.disciplinas.paraCache(codigo))
+                    val dados = resultado.dados
+                    // Atualiza o perfil local com os dados mais recentes do
+                    // backend (nome, número, turma, classeNome podem ter mudado)
+                    // e renova dataUltimaAtualizacao para refletir a sincronização.
+                    // Notificações de nota alterada não são geradas no cliente:
+                    // quem as cria é a Cloud Function `lancarNotasIndividuais`
+                    // no momento em que o professor lança a nota.
+                    database.perfilAlunoDao().inserirPerfil(
+                        perfil.copy(
+                            nomeAluno = dados.alunoNome,
+                            numeroAluno = dados.alunoNumero,
+                            turmaNome = dados.turmaNome,
+                            classeNome = dados.classeNome,
+                            dataUltimaAtualizacao = System.currentTimeMillis()
+                        )
+                    )
+                    database.disciplinaDao().substituir(codigo, dados.disciplinas.paraCache(codigo))
+                    _uiState.value = PerfilUiState.Sucesso(perfil, dados, offline = false)
                 }
                 is ConsultaResult.Erro -> {
                     if (resultado.tipo == ConsultaErro.NAO_AUTENTICADO) {

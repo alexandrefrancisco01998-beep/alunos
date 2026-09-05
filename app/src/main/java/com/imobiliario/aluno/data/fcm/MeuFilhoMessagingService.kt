@@ -42,11 +42,17 @@ class MeuFilhoMessagingService : FirebaseMessagingService() {
     }
 
     // Service não é ViewModel — não tem viewModelScope. Usa um escopo
-    // próprio de curta duração, cancelado quando o processo do Service
-    // for encerrado pelo sistema (não antes, pois registrarTokenNoBackend
-    // pode retornar antes da coroutine terminar de sincronizar o token).
-    private val escopo = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    // próprio com SupervisorJob, cancelado explicitamente em onDestroy
+    // para não vazar coroutines caso o sistema encerre o Service antes
+    // de todas terminarem.
+    private val job = SupervisorJob()
+    private val escopo = CoroutineScope(job + Dispatchers.IO)
     private val tokenRepository = FcmTokenRepository()
+
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
+    }
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)

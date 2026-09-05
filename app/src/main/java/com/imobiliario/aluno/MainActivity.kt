@@ -21,18 +21,17 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
+        // Código do aluno enviado via push (FCM) — pode vir null se o app
+        // foi aberto normalmente, não por toque numa notificação.
+        val codigoAlunoDeeplink = intent?.getStringExtra("codigoAluno")
+
         setContent {
             MeuFilhoTheme {
 
                 val notificationPermissionLauncher =
                     rememberLauncherForActivityResult(
                         ActivityResultContracts.RequestPermission()
-                    ) { granted ->
-                        if (granted) {
-                            // Permissão concedida.
-                            // Se desejar, registre o token FCM aqui.
-                        }
-                    }
+                    ) { /* permissão concedida ou negada — FCM já registra o token separadamente */ }
 
                 androidx.compose.runtime.LaunchedEffect(Unit) {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -48,7 +47,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
 
-                MeuFilhoApp()
+                MeuFilhoApp(codigoAlunoDeeplink = codigoAlunoDeeplink)
             }
         }
     }

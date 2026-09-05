@@ -7,6 +7,7 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,7 +46,10 @@ import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.NotificationsActive
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.NotificationsNone
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonAdd
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
@@ -155,7 +159,6 @@ fun PerfilScreen(
     }
 
     val perfisSalvos by perfilViewModel.perfisSalvos.collectAsState()
-    var mostrarSeletorAluno by remember { mutableStateOf(false) }
     var mostrarAdicionarAluno by remember { mutableStateOf(false) }
 
     val uiState by perfilViewModel.uiState.collectAsState()
@@ -182,9 +185,9 @@ fun PerfilScreen(
         abaAtiva = Aba.INICIO
     }
 
-    val onAbrirGerenciarAlunos: () -> Unit = {
-        if (perfisSalvos.size > 1) mostrarSeletorAluno = true
-        else mostrarAdicionarAluno = true
+    val onAbrirAdicionarAluno: () -> Unit = {
+        scopeDrawer.launch { drawerState.close() }
+        mostrarAdicionarAluno = true
     }
 
     ModalNavigationDrawer(
@@ -192,26 +195,114 @@ fun PerfilScreen(
         gesturesEnabled = abaAtiva == Aba.INICIO,
         drawerContent = {
             ModalDrawerSheet(modifier = Modifier.width(304.dp)) {
-                val estadoAtual = uiState
-                if (estadoAtual is PerfilUiState.Sucesso) {
-                    MenuHamburguerCabecalho(
-                        fotoUrl = perfilViewModel.fotoPerfilUrl,
-                        alunoNome = estadoAtual.dados.alunoNome,
-                        alunoNumero = estadoAtual.dados.alunoNumero,
-                        turmaNome = estadoAtual.dados.turmaNome
-                    )
-                    HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
-                }
-                NavigationDrawerItem(
-                    label = { Text("Adicionar ou trocar aluno") },
-                    icon = { Icon(Icons.Filled.Add, contentDescription = null) },
-                    selected = false,
-                    onClick = {
-                        scopeDrawer.launch { drawerState.close() }
-                        onAbrirGerenciarAlunos()
-                    },
-                    modifier = Modifier.padding(horizontal = Spacing.sm)
+                // Cabeçalho: conta do responsável (foto + nome + e-mail)
+                DrawerContaCabecalho(
+                    fotoUrl = perfilViewModel.fotoPerfilUrl,
+                    nomeUsuario = perfilViewModel.nomeUsuario,
+                    emailUsuario = perfilViewModel.emailUsuario
                 )
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
+
+                // Rótulo de seção
+                Text(
+                    text = "Alunos",
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(
+                        start = Spacing.lg + 4.dp,
+                        top = Spacing.sm,
+                        bottom = Spacing.xs
+                    )
+                )
+
+                // Lista de alunos salvos — o ativo fica destacado
+                LazyColumn(modifier = Modifier.weight(1f)) {
+                    items(perfisSalvos, key = { it.codigoAluno }) { perfil ->
+                        NavigationDrawerItem(
+                            label = {
+                                Column {
+                                    Text(
+                                        perfil.nomeAluno,
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        fontWeight = if (perfil.ativo) FontWeight.SemiBold else FontWeight.Normal,
+                                        maxLines = 1
+                                    )
+                                    Text(
+                                        "${perfil.turmaNome} · Nº ${perfil.numeroAluno}",
+                                        style = MaterialTheme.typography.bodySmall,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                        maxLines = 1
+                                    )
+                                }
+                            },
+                            icon = {
+                                Surface(
+                                    shape = CircleShape,
+                                    color = if (perfil.ativo)
+                                        MaterialTheme.colorScheme.primaryContainer
+                                    else
+                                        MaterialTheme.colorScheme.surfaceContainerHighest,
+                                    modifier = Modifier.size(40.dp)
+                                ) {
+                                    Box(
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.fillMaxSize()
+                                    ) {
+                                        Icon(
+                                            imageVector = Icons.Filled.Person,
+                                            contentDescription = null,
+                                            tint = if (perfil.ativo)
+                                                MaterialTheme.colorScheme.onPrimaryContainer
+                                            else
+                                                MaterialTheme.colorScheme.onSurfaceVariant,
+                                            modifier = Modifier.size(22.dp)
+                                        )
+                                    }
+                                }
+                            },
+                            badge = if (perfil.ativo) {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Check,
+                                        contentDescription = "Ativo",
+                                        tint = MaterialTheme.colorScheme.primary,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                }
+                            } else null,
+                            selected = perfil.ativo,
+                            onClick = {
+                                if (!perfil.ativo) {
+                                    scopeDrawer.launch { drawerState.close() }
+                                    perfilViewModel.ativarPerfil(perfil.codigoAluno)
+                                }
+                            },
+                            modifier = Modifier.padding(horizontal = Spacing.sm)
+                        )
+                    }
+
+                    // Item fixo: adicionar outro aluno
+                    item {
+                        NavigationDrawerItem(
+                            label = { Text("Adicionar aluno", color = MaterialTheme.colorScheme.primary) },
+                            icon = {
+                                Icon(
+                                    Icons.Filled.PersonAdd,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            },
+                            selected = false,
+                            onClick = onAbrirAdicionarAluno,
+                            modifier = Modifier.padding(horizontal = Spacing.sm)
+                        )
+                    }
+                }
+
+                HorizontalDivider(modifier = Modifier.padding(vertical = Spacing.xs))
+
+                // Ação: sair da conta — sempre ao fundo
                 NavigationDrawerItem(
                     label = { Text("Sair da conta") },
                     icon = { Icon(Icons.AutoMirrored.Filled.Logout, contentDescription = null) },
@@ -220,7 +311,7 @@ fun PerfilScreen(
                         scopeDrawer.launch { drawerState.close() }
                         mostrarDialogoSair = true
                     },
-                    modifier = Modifier.padding(horizontal = Spacing.sm)
+                    modifier = Modifier.padding(horizontal = Spacing.sm, vertical = Spacing.xs)
                 )
             }
         }
@@ -261,7 +352,7 @@ fun PerfilScreen(
                     naoLidas = naoLidas,
                     onIrInicio = { abaAtiva = Aba.INICIO },
                     onIrNotificacoes = { abaAtiva = Aba.NOTIFICACOES },
-                    onNovaConsulta = onAbrirGerenciarAlunos
+                    onNovaConsulta = { scopeDrawer.launch { drawerState.open() } }
                 )
             }
         ) { innerPadding ->
@@ -350,21 +441,6 @@ fun PerfilScreen(
                 dismissButton = {
                     TextButton(onClick = { mostrarDialogoSair = false }) { Text("Cancelar") }
                 }
-            )
-        }
-
-        if (mostrarSeletorAluno) {
-            SeletorAlunoSheet(
-                perfis = perfisSalvos,
-                onSelecionar = { perfil ->
-                    mostrarSeletorAluno = false
-                    perfilViewModel.ativarPerfil(perfil.codigoAluno)
-                },
-                onAdicionarOutro = {
-                    mostrarSeletorAluno = false
-                    mostrarAdicionarAluno = true
-                },
-                onDismiss = { mostrarSeletorAluno = false }
             )
         }
 
@@ -939,12 +1015,16 @@ private fun DisciplinaCard(disciplina: DisciplinaComNotas, onClick: () -> Unit, 
     }
 }
 
+/**
+ * Cabeçalho do drawer estilo Google Play Console: mostra a foto, o nome
+ * e o e-mail da conta logada — não os dados do aluno, que ficam na lista
+ * abaixo. Isso deixa claro "quem está logado" vs "qual aluno está vendo".
+ */
 @Composable
-private fun MenuHamburguerCabecalho(
+private fun DrawerContaCabecalho(
     fotoUrl: String?,
-    alunoNome: String,
-    alunoNumero: Int,
-    turmaNome: String
+    nomeUsuario: String,
+    emailUsuario: String
 ) {
     Row(
         modifier = Modifier
@@ -955,35 +1035,43 @@ private fun MenuHamburguerCabecalho(
         Surface(
             shape = CircleShape,
             color = MaterialTheme.colorScheme.surfaceContainerHighest,
-            modifier = Modifier.size(48.dp)
+            modifier = Modifier.size(52.dp)
         ) {
             if (fotoUrl != null) {
-                AsyncImage(model = fotoUrl, contentDescription = null, modifier = Modifier.fillMaxSize())
+                AsyncImage(
+                    model = fotoUrl,
+                    contentDescription = "Foto de perfil",
+                    modifier = Modifier.fillMaxSize()
+                )
             } else {
                 Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
                     Icon(
                         imageVector = Icons.Filled.AccountCircle,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.size(28.dp)
+                        modifier = Modifier.size(32.dp)
                     )
                 }
             }
         }
-        Spacer(Modifier.width(Spacing.sm + 4.dp))
-        Column {
-            Text(
-                alunoNome,
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.SemiBold,
-                maxLines = 1
-            )
-            Text(
-                "$turmaNome · Nº $alunoNumero",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                maxLines = 1
-            )
+        Spacer(Modifier.width(Spacing.md))
+        Column(modifier = Modifier.weight(1f)) {
+            if (nomeUsuario.isNotBlank()) {
+                Text(
+                    nomeUsuario,
+                    style = MaterialTheme.typography.titleSmall,
+                    fontWeight = FontWeight.SemiBold,
+                    maxLines = 1
+                )
+            }
+            if (emailUsuario.isNotBlank()) {
+                Text(
+                    emailUsuario,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    maxLines = 1
+                )
+            }
         }
     }
 }
