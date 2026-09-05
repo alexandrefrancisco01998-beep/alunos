@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+# Mantem as data classes usadas pelo Firestore com toObject()/toObjects()
+-keep class com.imobiliario.aluno.ui.notificacoes.NotificacaoNota { *; }
+-keep class com.imobiliario.aluno.ui.notificacoes.TipoNotificacao { *; }
+
+# Regra geral: protege qualquer modelo anotado com @PropertyName no
+# futuro, alem de preservar as anotacoes necessarias em runtime
+-keepclassmembers class com.imobiliario.aluno.** {
+  @com.google.firebase.firestore.PropertyName <fields>;
+  @com.google.firebase.firestore.PropertyName <methods>;
+}
+-keepattributes *Annotation*
