@@ -24,7 +24,7 @@ data class CodigoAlunoUiState(
     val consultaSucesso: String? = null
 ) {
     val codigoLimpo get() = codigo.replace("-", "")
-    val botaoHabilitado get() = codigoLimpo.length == 6 && !carregando
+    val botaoHabilitado get() = codigoLimpo.length == 10 && !carregando
 }
 
 class CodigoAlunoViewModel(application: Application) : AndroidViewModel(application) {
@@ -43,10 +43,13 @@ class CodigoAlunoViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     fun onCodigoChange(novoValor: String) {
-        val limpo = novoValor.replace("-", "").replace(" ", "").uppercase().take(6)
-        val formatado = if (limpo.length > 3) {
-            "${limpo.substring(0, 3)}-${limpo.substring(3)}"
-        } else limpo
+        val limpo = novoValor.replace("-", "").replace(" ", "").uppercase().take(10)
+        val formatado = buildString {
+            limpo.forEachIndexed { index, c ->
+                if (index != 0 && index % 3 == 0) append("-")
+                append(c)
+            }
+        }
         _uiState.value = _uiState.value.copy(codigo = formatado, erro = null)
     }
 

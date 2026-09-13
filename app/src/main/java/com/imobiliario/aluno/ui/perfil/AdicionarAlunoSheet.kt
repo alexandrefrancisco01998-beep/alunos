@@ -170,7 +170,7 @@ fun AdicionarAlunoSheet(
                         value = uiState.codigo,
                         onValueChange = viewModel::onCodigoChange,
                         label = { Text("Código do aluno") },
-                        placeholder = { Text("XXX-XXX") },
+                        placeholder = { Text("XXX-XXX-XXX-X") },
                         singleLine = true,
                         isError = uiState.erro != null,
                         enabled = !uiState.carregando,
@@ -186,7 +186,7 @@ fun AdicionarAlunoSheet(
                         modifier = Modifier.fillMaxWidth()
                     )
                     Text(
-                        text = "${uiState.codigoLimpo.length}/6",
+                        text = "${uiState.codigoLimpo.length}/10",
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier

@@ -128,7 +128,7 @@ fun CodigoAlunoScreen(
                 value = uiState.codigo,
                 onValueChange = viewModel::onCodigoChange,
                 label = { Text("Código do aluno") },
-                placeholder = { Text("XXX-XXX") },
+                placeholder = { Text("XXX-XXX-XXX-X") },
                 singleLine = true,
                 isError = uiState.erro != null,
                 enabled = !uiState.carregando,
