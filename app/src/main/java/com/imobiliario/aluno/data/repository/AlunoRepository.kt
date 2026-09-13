@@ -47,7 +47,7 @@ enum class ConsultaErro {
  * de novo não muda o resultado e ainda gastaria saldo do rate limit.
  *
  * SEGURANÇA:
- * - A validação de formato do código (6 caracteres) acontece ANTES de
+ * - A validação de formato do código (10 caracteres) acontece ANTES de
  *   qualquer chamada de rede — evita gastar saldo de rate limit da
  *   Cloud Function com entradas obviamente inválidas.
  * - A autorização por aluno/turma é responsabilidade da Cloud Function
@@ -67,7 +67,7 @@ class AlunoRepository(
 
     companion object {
         private const val TAG = "AlunoRepository"
-        private const val CODIGO_ALUNO_LENGTH = 6
+        private const val CODIGO_ALUNO_LENGTH = 10
         private const val MAX_TENTATIVAS_REDE = 3
         private const val BACKOFF_INICIAL_MS = 500L
     }
@@ -85,7 +85,7 @@ class AlunoRepository(
         if (codigo.length != CODIGO_ALUNO_LENGTH) {
             return ConsultaResult.Erro(
                 ConsultaErro.CODIGO_INVALIDO,
-                "O código deve ter 6 caracteres no formato XXX-XXX."
+                "O código deve ter 10 caracteres no formato XXX-XXX-XXX-X."
             )
         }
 
