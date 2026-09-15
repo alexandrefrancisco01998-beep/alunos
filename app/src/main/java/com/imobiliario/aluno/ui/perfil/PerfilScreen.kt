@@ -789,17 +789,23 @@ private fun DetalhesContent(
         val macs: String, val at: String, val mt: String
     )
 
-    val linhas = remember(notas) {
+    fun nota(campo: Int): String {
+    return notas["campo_$campo"]
+        ?: notas[campo.toString()]
+        ?: "-"
+}
+
+val linhas = remember(notas) {
         listOf(
-            LinhaTrimestre("1º", notas["campo_0"] ?: "-", notas["campo_1"] ?: "-", notas["campo_2"] ?: "-", notas["campo_3"] ?: "-", notas["campo_4"] ?: "-", notas["campo_5"] ?: "-"),
-            LinhaTrimestre("2º", notas["campo_6"] ?: "-", notas["campo_7"] ?: "-", notas["campo_8"] ?: "-", notas["campo_9"] ?: "-", notas["campo_10"] ?: "-", notas["campo_11"] ?: "-"),
-            LinhaTrimestre("3º", notas["campo_12"] ?: "-", notas["campo_13"] ?: "-", notas["campo_14"] ?: "-", notas["campo_15"] ?: "-", notas["campo_16"] ?: "-", notas["campo_17"] ?: "-")
+            LinhaTrimestre("1º", nota(0), nota(1), nota(2), nota(3), nota(4), nota(5)),
+            LinhaTrimestre("2º", nota(6), nota(7), nota(8), nota(9), nota(10), nota(11)),
+            LinhaTrimestre("3º", nota(12), nota(13), nota(14), nota(15), nota(16), nota(17))
         )
     }
     val mediaFinal = remember(notas) {
-        val mt1 = notas["campo_5"]?.replace(",", ".")?.toFloatOrNull()
-        val mt2 = notas["campo_11"]?.replace(",", ".")?.toFloatOrNull()
-        val mt3 = notas["campo_17"]?.replace(",", ".")?.toFloatOrNull()
+        val mt1 = nota(5).takeIf { it != "-" }?.replace(",", ".")?.toFloatOrNull()
+        val mt2 = nota(11).takeIf { it != "-" }?.replace(",", ".")?.toFloatOrNull()
+        val mt3 = nota(17).takeIf { it != "-" }?.replace(",", ".")?.toFloatOrNull()
         val validas = listOfNotNull(mt1, mt2, mt3)
         if (validas.isEmpty()) null else (validas.sum() / validas.size).roundToInt()
     }
