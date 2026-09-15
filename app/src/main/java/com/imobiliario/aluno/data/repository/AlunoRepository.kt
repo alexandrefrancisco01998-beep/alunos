@@ -1,6 +1,5 @@
 package com.imobiliario.aluno.data.repository
 
-import android.util.Log
 
 import android.util.Log
 import com.google.firebase.FirebaseNetworkException
