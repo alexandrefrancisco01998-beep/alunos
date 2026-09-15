@@ -819,6 +819,15 @@ private fun DetalhesContent(
             }
         }
         item {
+            Text(
+                text = "DIAGNÓSTICO TEMPORÁRIO: ${notas.size} notas recebidas | Chaves: ${notas.keys.sorted().joinToString(", ")}",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = Spacing.xs)
+            )
+        }
+
+        item {
             Card(
                 shape = MaterialTheme.shapes.medium,
                 colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
