@@ -3,10 +3,6 @@ package com.imobiliario.aluno.ui.perfil
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.imobiliario.aluno.data.local.AppDatabase
-import com.imobiliario.aluno.data.local.PerfilAluno
-import com.imobiliario.aluno.data.local.paraCache
-import com.imobiliario.aluno.data.local.paraDisciplinas
 import com.imobiliario.aluno.data.model.DadosConsultaAluno
 import com.imobiliario.aluno.data.repository.AlunoRepository
 import com.imobiliario.aluno.data.repository.AuthRepository
@@ -14,6 +10,9 @@ import com.imobiliario.aluno.data.repository.ConsultaErro
 import com.imobiliario.aluno.data.repository.ConsultaResult
 import com.imobiliario.aluno.data.repository.NotificacaoRepository
 import com.imobiliario.aluno.data.repository.NotasTempoRealRepository
+import com.imobiliario.aluno.data.repository.PerfilCacheRepository
+import com.imobiliario.aluno.data.repository.PerfilSalvo
+import com.imobiliario.aluno.data.repository.paraPerfilSalvo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -27,7 +26,7 @@ import kotlinx.coroutines.launch
 sealed interface PerfilUiState {
     data object Carregando : PerfilUiState
     data class Sucesso(
-        val perfil: PerfilAluno,
+        val perfil: PerfilSalvo,
         val dados: DadosConsultaAluno,
         val offline: Boolean
     ) : PerfilUiState
@@ -36,7 +35,7 @@ sealed interface PerfilUiState {
 
 class PerfilViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val database = AppDatabase.getDatabase(application)
+    private val cache = PerfilCacheRepository()
     private val repository = AlunoRepository()
     private val authRepository = AuthRepository(application)
     private val notificacaoRepository = NotificacaoRepository()
@@ -47,15 +46,18 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
 
     private var codigoAluno: String = ""
 
+    private val uid: String get() = authRepository.usuarioAtual?.uid ?: ""
+
     /**
      * Todos os alunos já consultados neste aparelho, do mais recente para
      * o mais antigo — alimenta a lista de alunos no drawer do
      * [PerfilScreen]. Como nenhum perfil é apagado ao adicionar outro
-     * (ver [PerfilAlunoDao.ativarPerfil]), esta lista reflete de verdade
-     * tudo que já foi salvo.
+     * (ver [PerfilCacheRepository.ativarPerfil]), esta lista reflete de
+     * verdade tudo que já foi salvo. Vem do Realtime Database (cache
+     * local via persistência offline do SDK) em vez de Room.
      */
-    val perfisSalvos: StateFlow<List<PerfilAluno>> by lazy {
-        database.perfilAlunoDao().listarTodosPerfis()
+    val perfisSalvos: StateFlow<List<PerfilSalvo>> by lazy {
+        cache.observarTodosPerfis(uid)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     }
 
@@ -64,8 +66,8 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
      * dados exibidos instantaneamente assim que o usuário escolhe outro
      * aluno no seletor, sem precisar navegar ou recarregar a tela.
      */
-    val perfilAtivo: StateFlow<PerfilAluno?> by lazy {
-        database.perfilAlunoDao().observarPerfilAtivo()
+    val perfilAtivo: StateFlow<PerfilSalvo?> by lazy {
+        cache.observarPerfilAtivo(uid)
             .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
     }
 
@@ -115,14 +117,6 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     val emailUsuario: String
         get() = authRepository.usuarioAtual?.email ?: ""
 
-    /**
-     * Carrega a tela em modo "cache-first": mostra o que já está salvo
-     * localmente (perfil + disciplinas da última consulta bem-sucedida)
-     * imediatamente, sem esperar rede, e só depois atualiza em segundo
-     * plano consultando o backend. Assim o app não depende de bater no
-     * backend toda vez que a tela abre — funciona com os últimos dados
-     * salvos e atualiza quando há conexão.
-     */
     private fun mesclarNotasTempoReal(
         atualizacoes: Map<String, Map<String, String>>
     ) {
@@ -150,19 +144,26 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         )
 
         viewModelScope.launch {
-            database.disciplinaDao().substituir(
-                codigoAluno,
-                disciplinasAtualizadas.paraCache(codigoAluno)
-            )
+            cache.substituirDisciplinas(uid, codigoAluno, disciplinasAtualizadas)
         }
     }
 
+    /**
+     * Carrega a tela em modo "cache-first": mostra o que já está salvo
+     * localmente (perfil + disciplinas da última consulta bem-sucedida)
+     * imediatamente, sem esperar rede, e só depois atualiza em segundo
+     * plano consultando o backend. O cache agora vem do Realtime
+     * Database (persistência offline do SDK) em vez de Room — o app não
+     * depende de bater no backend toda vez que a tela abre.
+     */
     fun carregar(codigo: String) {
         if (codigoAluno == codigo && _uiState.value !is PerfilUiState.Erro) return
         codigoAluno = codigo
 
+        val uidAtual = uid
+
         notasTempoRealRepository.observar(
-            uid = authRepository.usuarioAtual?.uid ?: "",
+            uid = uidAtual,
             codigoAluno = codigo,
             onNotasAtualizadas = { atualizacoes ->
                 mesclarNotasTempoReal(atualizacoes)
@@ -170,14 +171,14 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
         )
 
         viewModelScope.launch {
-            val perfil = database.perfilAlunoDao().getPerfilPorCodigo(codigo)
+            val perfil = cache.getPerfil(uidAtual, codigo)
             if (perfil == null) {
                 _uiState.value = PerfilUiState.Erro("Perfil não encontrado.")
                 return@launch
             }
 
             // 1) Mostra imediatamente o que já está salvo (se houver).
-            val disciplinasSalvas = database.disciplinaDao().listarPorAluno(codigo).paraDisciplinas()
+            val disciplinasSalvas = cache.getDisciplinas(uidAtual, codigo)
             if (disciplinasSalvas.isNotEmpty()) {
                 _uiState.value = PerfilUiState.Sucesso(
                     perfil = perfil,
@@ -202,16 +203,11 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
                     // Notificações de nota alterada não são geradas no cliente:
                     // quem as cria é a Cloud Function `lancarNotasIndividuais`
                     // no momento em que o professor lança a nota.
-                    database.perfilAlunoDao().inserirPerfil(
-                        perfil.copy(
-                            nomeAluno = dados.alunoNome,
-                            numeroAluno = dados.alunoNumero,
-                            turmaNome = dados.turmaNome,
-                            classeNome = dados.classeNome,
-                            dataUltimaAtualizacao = System.currentTimeMillis()
-                        )
+                    cache.salvarPerfil(
+                        uidAtual,
+                        dados.paraPerfilSalvo(codigo, ativo = perfil.ativo),
+                        dados.disciplinas
                     )
-                    database.disciplinaDao().substituir(codigo, dados.disciplinas.paraCache(codigo))
                     _uiState.value = PerfilUiState.Sucesso(perfil, dados, offline = false)
                 }
                 is ConsultaResult.Erro -> {
@@ -251,38 +247,39 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
      * Troca o aluno ativo para um já salvo anteriormente — usado pela
      * lista de alunos no drawer do [PerfilScreen]. Diferente do antigo
      * fluxo de "nova consulta", aqui NADA é desativado ou apagado de
-     * forma solta: `ativarPerfil`
-     * troca o ativo em uma única transação, e como [uiState] é recarregado
+     * forma solta: [PerfilCacheRepository.ativarPerfil] troca o ativo em
+     * uma única atualização multi-path, e como [uiState] é recarregado
      * a partir do novo `codigo`, a Home reflete a troca imediatamente.
      */
     fun ativarPerfil(codigo: String) {
         viewModelScope.launch {
-            database.perfilAlunoDao().ativarPerfil(codigo)
+            cache.ativarPerfil(uid, codigo)
             carregar(codigo)
         }
+    }
+
+    override fun onCleared() {
+        notasTempoRealRepository.parar()
+        super.onCleared()
     }
 
     /**
      * Encerra a sessão (Google ou e-mail/senha) e apaga todo o cache local
      * sensível: perfis de alunos consultados (nome, número, turma) e o
-     * cache de disciplinas/notas. Diferente de [ativarPerfil], aqui a
-     * conta muda — não é seguro deixar dados do aluno anterior acessíveis
-     * para quem entrar em seguida no mesmo aparelho.
+     * cache de disciplinas/notas, agora guardado no Realtime Database sob
+     * o uid do usuário. Diferente de [ativarPerfil], aqui a conta muda —
+     * não é seguro deixar dados do aluno anterior acessíveis para quem
+     * entrar em seguida no mesmo aparelho.
      *
      * Notificações não têm mais cópia local (ver [NotificacaoRepository]),
      * então não há nada a apagar aqui — elas ficam no Firestore, associadas
      * ao uid do encarregado, e somem da tela sozinhas quando a sessão troca
      * (a query já filtra por uid).
-     */    override fun onCleared() {
-        notasTempoRealRepository.parar()
-        super.onCleared()
-    }
-
-
+     */
     fun sairDaConta(aoConcluir: () -> Unit) {
+        val uidAtual = uid
         viewModelScope.launch {
-            database.perfilAlunoDao().apagarTodosPerfis()
-            database.disciplinaDao().apagarTodas()
+            cache.apagarTudo(uidAtual)
             authRepository.sair()
             aoConcluir()
         }

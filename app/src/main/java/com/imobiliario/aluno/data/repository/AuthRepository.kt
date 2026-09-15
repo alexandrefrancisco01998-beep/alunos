@@ -187,8 +187,8 @@ class AuthRepository(
 
     /**
      * Encerra a sessão do Firebase. Isso invalida os tokens locais, mas
-     * NÃO limpa dados em cache (Room) nem revoga a conta Google
-     * selecionada no Credential Manager — quem chama este método é
+     * NÃO limpa dados em cache (Realtime Database) nem revoga a conta
+     * Google selecionada no Credential Manager — quem chama este método é
      * responsável por também limpar o cache local sensível (ver
      * `PerfilViewModel.sairDaConta`).
      */

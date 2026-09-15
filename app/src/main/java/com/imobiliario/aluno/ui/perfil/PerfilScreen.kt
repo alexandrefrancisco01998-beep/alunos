@@ -55,6 +55,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -140,25 +142,56 @@ private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilScreen(
-    codigoAluno: String,
+    // null quando ainda não há nenhum aluno salvo neste aparelho — a tela
+    // inteira cai no estado vazio ([HomeVazia]) até o usuário adicionar o
+    // primeiro aluno pelo bottomsheet. Deixa de existir uma tela cheia
+    // separada de "Código do aluno": ela agora só existe como bottomsheet
+    // (ver [AdicionarAlunoSheet]), aberto por cima desta tela.
+    codigoAluno: String?,
     onSairDaConta: () -> Unit,
     perfilViewModel: PerfilViewModel = viewModel(),
     notificacoesViewModel: NotificacoesViewModel = viewModel()
 ) {
     LaunchedEffect(codigoAluno) {
-        perfilViewModel.carregar(codigoAluno)
-        notificacoesViewModel.iniciar(codigoAluno)
+        if (codigoAluno != null) {
+            perfilViewModel.carregar(codigoAluno)
+            notificacoesViewModel.iniciar(codigoAluno)
+        }
     }
 
     val perfilAtivo by perfilViewModel.perfilAtivo.collectAsState()
+
+    // Cobre o caso "primeiro aluno da vida do app": a tela abre sem
+    // codigoAluno nenhum (estado vazio), o usuário adiciona um aluno pelo
+    // bottomsheet, e o cache passa a ter um perfil ativo — sem que
+    // [codigoAluno] em si mude (continua null, pois não há navegação).
+    // Este efeito detecta essa transição e carrega os dados sozinho.
     LaunchedEffect(perfilAtivo?.codigoAluno) {
-        perfilAtivo?.codigoAluno?.let { codigo ->
-            if (codigo != codigoAluno) notificacoesViewModel.iniciar(codigo)
+        val codigo = perfilAtivo?.codigoAluno ?: return@LaunchedEffect
+        if (codigo != codigoAluno) {
+            perfilViewModel.carregar(codigo)
+            notificacoesViewModel.iniciar(codigo)
         }
     }
 
     val perfisSalvos by perfilViewModel.perfisSalvos.collectAsState()
     var mostrarAdicionarAluno by remember { mutableStateOf(false) }
+
+    // Nenhum aluno salvo neste aparelho ainda: nem o parâmetro de entrada
+    // nem o perfil ativo observado do cache existem. Mostra a Home vazia
+    // em vez do conteúdo normal — sem drawer, sem bottom bar de
+    // notificações, só o botão para abrir o bottomsheet.
+    if (codigoAluno == null && perfilAtivo == null) {
+        HomeVazia(onAdicionarAluno = { mostrarAdicionarAluno = true })
+
+        if (mostrarAdicionarAluno) {
+            AdicionarAlunoSheet(
+                onDismiss = { mostrarAdicionarAluno = false },
+                onAlunoAtivado = { mostrarAdicionarAluno = false }
+            )
+        }
+        return
+    }
 
     val uiState by perfilViewModel.uiState.collectAsState()
     val naoLidas by perfilViewModel.notificacoesNaoLidas.collectAsState()
@@ -448,6 +481,85 @@ fun PerfilScreen(
                 onDismiss = { mostrarAdicionarAluno = false },
                 onAlunoAtivado = { mostrarAdicionarAluno = false }
             )
+        }
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Estado vazio: nenhum aluno salvo ainda neste aparelho
+// ---------------------------------------------------------------------------
+/**
+ * Substitui a antiga tela cheia "Código do aluno" como destino inicial
+ * após o login. Em vez de forçar a digitação do código numa tela
+ * separada antes mesmo de mostrar a Home, abre a própria Home num
+ * estado vazio com um botão central que abre o mesmo bottomsheet usado
+ * para adicionar alunos extras ([AdicionarAlunoSheet]) — um único
+ * fluxo de entrada de código em todo o app, primeiro aluno ou não.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun HomeVazia(onAdicionarAluno: () -> Unit) {
+    Scaffold(
+        modifier = Modifier.windowInsetsPadding(WindowInsets.safeDrawing),
+        topBar = { MeuFilhoTopBar(title = "Início") }
+    ) { innerPadding ->
+        Column(
+            modifier = Modifier
+                .padding(innerPadding)
+                .fillMaxSize()
+                .padding(Spacing.xl),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Surface(
+                shape = CircleShape,
+                color = MaterialTheme.colorScheme.primaryContainer,
+                modifier = Modifier.size(88.dp)
+            ) {
+                Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxSize()) {
+                    Icon(
+                        imageVector = Icons.Filled.Person,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onPrimaryContainer,
+                        modifier = Modifier.size(40.dp)
+                    )
+                }
+            }
+
+            Spacer(Modifier.height(Spacing.lg))
+
+            Text(
+                text = "Nenhum aluno adicionado",
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.SemiBold,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(Modifier.height(Spacing.sm))
+
+            Text(
+                text = "Adicione o código do aluno fornecido pela escola para acompanhar as notas.",
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center
+            )
+
+            Spacer(Modifier.height(Spacing.lg + 4.dp))
+
+            Button(
+                onClick = onAdicionarAluno,
+                shape = MaterialTheme.shapes.large,
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(52.dp)
+            ) {
+                Icon(Icons.Filled.PersonAdd, contentDescription = null, modifier = Modifier.size(18.dp))
+                Spacer(Modifier.width(8.dp))
+                Text("Adicionar aluno", fontWeight = FontWeight.Medium)
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.imobiliario.aluno
 
 import android.app.Application
 import com.google.firebase.FirebaseApp
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.PersistentCacheSettings
@@ -21,5 +22,12 @@ class MeuFilhoApplication : Application() {
                 .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
                 .build()
         }
+
+        // Persistência offline do Realtime Database — substitui o Room
+        // como fonte de cache local (perfis + disciplinas/notas).
+        // Precisa ser chamado uma única vez, antes de qualquer uso de
+        // FirebaseDatabase.getInstance() no resto do app, por isso fica
+        // aqui no onCreate do Application.
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true)
     }
 }

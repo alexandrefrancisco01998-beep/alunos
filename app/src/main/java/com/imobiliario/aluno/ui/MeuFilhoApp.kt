@@ -7,21 +7,21 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
-import com.imobiliario.aluno.ui.codigo.CodigoAlunoScreen
 import com.imobiliario.aluno.ui.login.LoginScreen
 import com.imobiliario.aluno.ui.navigation.Routes
 import com.imobiliario.aluno.ui.perfil.PerfilScreen
 
 /**
  * @param codigoAlunoDeeplink Código vindo de uma notificação push (FCM).
- *   Quando não-nulo e o usuário já está autenticado, o app pula login e
- *   código e abre direto o perfil do aluno correspondente.
+ *   Quando não-nulo e o usuário já está autenticado, é repassado direto
+ *   para [PerfilScreen] assim que a Home abre — sem tela cheia
+ *   intermediária de "código do aluno", que deixou de existir. A Home
+ *   observa esse aluno via cache do Realtime Database, mesmo que ele
+ *   ainda não seja o perfil ativo salvo localmente.
  */
 @Composable
 fun MeuFilhoApp(codigoAlunoDeeplink: String? = null) {
@@ -29,12 +29,12 @@ fun MeuFilhoApp(codigoAlunoDeeplink: String? = null) {
 
     // Deeplink do FCM: só navega se o usuário já estiver autenticado e
     // o código vier preenchido. Caso contrário, o fluxo normal (login →
-    // código → perfil) resolve a situação por conta própria.
+    // Home) resolve a situação por conta própria.
     LaunchedEffect(codigoAlunoDeeplink) {
         val codigo = codigoAlunoDeeplink?.takeIf { it.isNotBlank() } ?: return@LaunchedEffect
         val autenticado = FirebaseAuth.getInstance().currentUser != null
         if (autenticado) {
-            navController.navigate(Routes.perfil(codigo)) {
+            navController.navigate(Routes.HOME) {
                 popUpTo(Routes.LOGIN) { inclusive = true }
             }
         }
@@ -51,30 +51,20 @@ fun MeuFilhoApp(codigoAlunoDeeplink: String? = null) {
         composable(Routes.LOGIN) {
             LoginScreen(
                 onAutenticado = {
-                    navController.navigate(Routes.CODIGO_ALUNO) {
+                    navController.navigate(Routes.HOME) {
                         popUpTo(Routes.LOGIN) { inclusive = true }
                     }
                 }
             )
         }
 
-        composable(Routes.CODIGO_ALUNO) {
-            CodigoAlunoScreen(
-                onCodigoConfirmado = { codigo ->
-                    navController.navigate(Routes.perfil(codigo)) {
-                        popUpTo(Routes.CODIGO_ALUNO) { inclusive = true }
-                    }
-                }
-            )
-        }
-
-        composable(
-            route = Routes.PERFIL,
-            arguments = listOf(navArgument("codigoAluno") { type = NavType.StringType })
-        ) { backStackEntry ->
-            val codigo = backStackEntry.arguments?.getString("codigoAluno") ?: ""
+        composable(Routes.HOME) {
+            // codigoAluno só vem preenchido no primeiro frame quando a
+            // Home é aberta por deeplink do FCM. No fluxo normal (login
+            // direto), a própria PerfilScreen observa o perfil ativo do
+            // cache e decide sozinha entre estado vazio ou conteúdo.
             PerfilScreen(
-                codigoAluno = codigo,
+                codigoAluno = codigoAlunoDeeplink?.takeIf { it.isNotBlank() },
                 onSairDaConta = {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(0) { inclusive = true }
