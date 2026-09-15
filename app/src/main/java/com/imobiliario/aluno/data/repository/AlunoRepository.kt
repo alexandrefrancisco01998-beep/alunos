@@ -203,6 +203,8 @@ class AlunoRepository(
 
         return DisciplinaComNotas(
             disciplinaId = index,
+            codigoUnicoDisciplina =
+                (this["codigoUnicoDisciplina"] as? String)?.replace("-", "")?.uppercase() ?: "",
             nomeDisciplina = this["nomeDisciplina"] as? String ?: "",
             professor = this["professor"] as? String ?: "—",
             notas = notas

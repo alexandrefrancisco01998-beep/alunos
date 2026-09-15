@@ -15,6 +15,7 @@ fun List<DisciplinaComNotas>.paraCache(codigoAluno: String): List<DisciplinaCach
         DisciplinaCache(
             codigoAluno = codigoAluno,
             disciplinaId = disciplina.disciplinaId,
+            codigoUnicoDisciplina = disciplina.codigoUnicoDisciplina,
             nomeDisciplina = disciplina.nomeDisciplina,
             professor = disciplina.professor,
             notasJson = JSONObject(disciplina.notas as Map<*, *>).toString()
@@ -30,6 +31,7 @@ fun List<DisciplinaCache>.paraDisciplinas(): List<DisciplinaComNotas> =
 
         DisciplinaComNotas(
             disciplinaId = cache.disciplinaId,
+            codigoUnicoDisciplina = cache.codigoUnicoDisciplina,
             nomeDisciplina = cache.nomeDisciplina,
             professor = cache.professor,
             notas = notas

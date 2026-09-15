@@ -37,6 +37,7 @@ data class DisciplinaCache(
     @PrimaryKey(autoGenerate = true) val id: Long = 0,
     @ColumnInfo(name = "codigo_aluno") val codigoAluno: String,
     @ColumnInfo(name = "disciplina_id") val disciplinaId: Int,
+    @ColumnInfo(name = "codigo_unico_disciplina") val codigoUnicoDisciplina: String = "",
     @ColumnInfo(name = "nome_disciplina") val nomeDisciplina: String,
     val professor: String,
     @ColumnInfo(name = "notas_json") val notasJson: String

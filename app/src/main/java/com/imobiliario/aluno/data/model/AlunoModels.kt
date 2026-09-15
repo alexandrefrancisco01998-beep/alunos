@@ -2,6 +2,7 @@ package com.imobiliario.aluno.data.model
 
 data class DisciplinaComNotas(
     val disciplinaId: Int,
+    val codigoUnicoDisciplina: String = "",
     val nomeDisciplina: String,
     val professor: String,
     val notas: Map<String, String>

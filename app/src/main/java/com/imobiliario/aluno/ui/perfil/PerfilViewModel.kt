@@ -13,6 +13,7 @@ import com.imobiliario.aluno.data.repository.AuthRepository
 import com.imobiliario.aluno.data.repository.ConsultaErro
 import com.imobiliario.aluno.data.repository.ConsultaResult
 import com.imobiliario.aluno.data.repository.NotificacaoRepository
+import com.imobiliario.aluno.data.repository.NotasTempoRealRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -39,6 +40,7 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     private val repository = AlunoRepository()
     private val authRepository = AuthRepository(application)
     private val notificacaoRepository = NotificacaoRepository()
+    private val notasTempoRealRepository = NotasTempoRealRepository()
 
     private val _uiState = MutableStateFlow<PerfilUiState>(PerfilUiState.Carregando)
     val uiState: StateFlow<PerfilUiState> = _uiState.asStateFlow()
@@ -121,9 +123,52 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
      * backend toda vez que a tela abre — funciona com os últimos dados
      * salvos e atualiza quando há conexão.
      */
+    private fun mesclarNotasTempoReal(
+        atualizacoes: Map<String, Map<String, String>>
+    ) {
+        val estado = _uiState.value as? PerfilUiState.Sucesso ?: return
+
+        val disciplinasAtualizadas = estado.dados.disciplinas.map { disciplina ->
+            val codigo = disciplina.codigoUnicoDisciplina
+                .replace("-", "")
+                .uppercase()
+
+            val novasNotas = atualizacoes[codigo] ?: return@map disciplina
+
+            disciplina.copy(
+                notas = disciplina.notas + novasNotas
+            )
+        }
+
+        val novosDados = estado.dados.copy(
+            disciplinas = disciplinasAtualizadas
+        )
+
+        _uiState.value = estado.copy(
+            dados = novosDados,
+            offline = false
+        )
+
+        viewModelScope.launch {
+            database.disciplinaDao().substituir(
+                codigoAluno,
+                disciplinasAtualizadas.paraCache(codigoAluno)
+            )
+        }
+    }
+
     fun carregar(codigo: String) {
         if (codigoAluno == codigo && _uiState.value !is PerfilUiState.Erro) return
         codigoAluno = codigo
+
+        notasTempoRealRepository.observar(
+            uid = authRepository.usuarioAtual?.uid ?: "",
+            codigoAluno = codigo,
+            onNotasAtualizadas = { atualizacoes ->
+                mesclarNotasTempoReal(atualizacoes)
+            }
+        )
+
         viewModelScope.launch {
             val perfil = database.perfilAlunoDao().getPerfilPorCodigo(codigo)
             if (perfil == null) {
@@ -228,7 +273,12 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
      * então não há nada a apagar aqui — elas ficam no Firestore, associadas
      * ao uid do encarregado, e somem da tela sozinhas quando a sessão troca
      * (a query já filtra por uid).
-     */
+     */    override fun onCleared() {
+        notasTempoRealRepository.parar()
+        super.onCleared()
+    }
+
+
     fun sairDaConta(aoConcluir: () -> Unit) {
         viewModelScope.launch {
             database.perfilAlunoDao().apagarTodosPerfis()
