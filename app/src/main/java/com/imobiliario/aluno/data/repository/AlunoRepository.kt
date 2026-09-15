@@ -181,13 +181,25 @@ class AlunoRepository(
         // (as? Map<String, String>) não falha em runtime por apagamento de
         // tipo genérico, mas também não converte os valores, então os dados
         // somem silenciosamente na hora de exibir.
-        val notas: Map<String, String> = notasMap.entries
-            .mapNotNull { (chave, valor) ->
-                val chaveStr = chave as? String ?: return@mapNotNull null
-                val valorStr = valor?.toString() ?: return@mapNotNull null
-                chaveStr to valorStr
+        val notas = mutableMapOf<String, String>()
+
+        notasMap.entries.forEach { (chave, valor) ->
+            val chaveStr = chave as? String ?: return@forEach
+            val valorStr = valor?.toString() ?: return@forEach
+
+            val chaveNormalizada = when {
+                chaveStr.matches(Regex("^\\d+$")) ->
+                    "campo_$chaveStr"
+
+                chaveStr.matches(Regex("^campo_\\d+$")) ->
+                    chaveStr
+
+                else ->
+                    chaveStr
             }
-            .toMap()
+
+            notas[chaveNormalizada] = valorStr
+        }
 
         return DisciplinaComNotas(
             disciplinaId = index,
