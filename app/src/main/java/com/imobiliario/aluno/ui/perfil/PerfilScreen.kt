@@ -119,12 +119,12 @@ import java.util.Locale
 import kotlin.math.roundToInt
 
 // ---------------------------------------------------------------------------
-// Aba ativa — controla o que é exibido no corpo e no título da TopBar[cite: 1].
-// Não existe navegação nova: é só um enum de estado local[cite: 1].
+// Aba ativa — controla o que é exibido no corpo e no título da TopBar.
+// Não existe navegação nova: é só um enum de estado local.
 // ---------------------------------------------------------------------------
 private enum class Aba { INICIO, NOTIFICACOES, DETALHES }
 
-// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação[cite: 1].
+// Dados mínimos para mostrar os detalhes de uma disciplina sem navegação.
 private data class DetalhesAtivos(
     val disciplina: DisciplinaComNotas,
     val alunoNome: String,
@@ -132,7 +132,7 @@ private data class DetalhesAtivos(
     val turmaNome: String
 )
 
-// Larguras das colunas da tabela de notas[cite: 1]
+// Larguras das colunas da tabela de notas
 private val LarguraColunaTrimestre = 56.dp
 private val LarguraColunaDado = 64.dp
 private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS", "AT", "MT")
@@ -141,7 +141,6 @@ private val TitulosColunas = listOf("Trim.", "1ºACS", "2ºACS", "3ºACS", "MACS
 @Composable
 fun PerfilScreen(
     codigoAluno: String,
-    onNovaConsulta: () -> Unit,
     onSairDaConta: () -> Unit,
     perfilViewModel: PerfilViewModel = viewModel(),
     notificacoesViewModel: NotificacoesViewModel = viewModel()
@@ -352,7 +351,7 @@ fun PerfilScreen(
                     naoLidas = naoLidas,
                     onIrInicio = { abaAtiva = Aba.INICIO },
                     onIrNotificacoes = { abaAtiva = Aba.NOTIFICACOES },
-                    onNovaConsulta = { scopeDrawer.launch { drawerState.open() } }
+                    onNovaConsulta = onAbrirAdicionarAluno
                 )
             }
         ) { innerPadding ->
@@ -368,7 +367,7 @@ fun PerfilScreen(
                 ) { aba ->
                     when (aba) {
                         Aba.INICIO -> {
-                            // Observa a KClass do estado para evitar que a troca no termo de busca acione o fade[cite: 1]
+                            // Observa a KClass do estado para evitar que a troca no termo de busca acione o fade
                             AnimatedContent(
                                 targetState = uiState::class,
                                 transitionSpec = { fadeIn(tween(220)) togetherWith fadeOut(tween(140)) },

@@ -59,12 +59,20 @@ import com.imobiliario.aluno.ui.theme.Spacing
 @Composable
 fun CodigoAlunoScreen(
     onCodigoConfirmado: (String) -> Unit,
+    // false quando a tela é reaberta para ADICIONAR outro aluno (a partir
+    // do Perfil) — nesse caso já existe perfil salvo por definição, e
+    // redirecionar automaticamente de volta impediria digitar o novo
+    // código. true (padrão) só no fluxo inicial logo após o login, onde
+    // faz sentido pular a digitação se já houver um aluno salvo.
+    redirecionarSePerfilSalvo: Boolean = true,
     viewModel: CodigoAlunoViewModel = viewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(uiState.perfilSalvoEncontrado) {
-        uiState.perfilSalvoEncontrado?.let { onCodigoConfirmado(it) }
+        if (redirecionarSePerfilSalvo) {
+            uiState.perfilSalvoEncontrado?.let { onCodigoConfirmado(it) }
+        }
     }
 
     LaunchedEffect(uiState.consultaSucesso) {

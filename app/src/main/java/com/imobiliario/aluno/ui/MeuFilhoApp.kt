@@ -75,11 +75,6 @@ fun MeuFilhoApp(codigoAlunoDeeplink: String? = null) {
             val codigo = backStackEntry.arguments?.getString("codigoAluno") ?: ""
             PerfilScreen(
                 codigoAluno = codigo,
-                onNovaConsulta = {
-                    navController.navigate(Routes.CODIGO_ALUNO) {
-                        popUpTo(0) { inclusive = true }
-                    }
-                },
                 onSairDaConta = {
                     navController.navigate(Routes.LOGIN) {
                         popUpTo(0) { inclusive = true }

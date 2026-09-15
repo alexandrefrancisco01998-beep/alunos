@@ -1,6 +1,8 @@
 package com.imobiliario.aluno.data.repository
 
 import android.util.Log
+
+import android.util.Log
 import com.google.firebase.FirebaseNetworkException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.functions.FirebaseFunctions
@@ -73,6 +75,7 @@ class AlunoRepository(
     }
 
     suspend fun consultarPorCodigo(codigoAlunoBruto: String): ConsultaResult {
+        Log.d("AlunoRepository", "UID atual: ${auth.currentUser?.uid}")
         if (auth.currentUser == null) {
             return ConsultaResult.Erro(
                 ConsultaErro.NAO_AUTENTICADO,

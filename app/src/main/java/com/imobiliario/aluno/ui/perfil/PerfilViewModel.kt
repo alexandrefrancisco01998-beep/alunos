@@ -47,9 +47,10 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
 
     /**
      * Todos os alunos já consultados neste aparelho, do mais recente para
-     * o mais antigo — alimenta o [SeletorAlunoSheet]. Como nenhum perfil
-     * é apagado ao adicionar outro (ver [PerfilAlunoDao.ativarPerfil]),
-     * esta lista reflete de verdade tudo que já foi salvo.
+     * o mais antigo — alimenta a lista de alunos no drawer do
+     * [PerfilScreen]. Como nenhum perfil é apagado ao adicionar outro
+     * (ver [PerfilAlunoDao.ativarPerfil]), esta lista reflete de verdade
+     * tudo que já foi salvo.
      */
     val perfisSalvos: StateFlow<List<PerfilAluno>> by lazy {
         database.perfilAlunoDao().listarTodosPerfis()
@@ -202,9 +203,10 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     }
 
     /**
-     * Troca o aluno ativo para um já salvo anteriormente — usado pelo
-     * [SeletorAlunoSheet]. Diferente do antigo fluxo de "nova consulta",
-     * aqui NADA é desativado ou apagado de forma solta: `ativarPerfil`
+     * Troca o aluno ativo para um já salvo anteriormente — usado pela
+     * lista de alunos no drawer do [PerfilScreen]. Diferente do antigo
+     * fluxo de "nova consulta", aqui NADA é desativado ou apagado de
+     * forma solta: `ativarPerfil`
      * troca o ativo em uma única transação, e como [uiState] é recarregado
      * a partir do novo `codigo`, a Home reflete a troca imediatamente.
      */
