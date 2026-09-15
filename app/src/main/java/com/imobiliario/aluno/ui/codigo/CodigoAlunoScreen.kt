@@ -1,5 +1,7 @@
 package com.imobiliario.aluno.ui.codigo
 
+import com.google.firebase.auth.FirebaseAuth
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
@@ -139,6 +141,9 @@ fun CodigoAlunoScreen(
                 placeholder = { Text("XXX-XXX-XXX-X") },
                 singleLine = true,
                 isError = uiState.erro != null,
+                    supportingText = {
+                        Text("UID Firebase: ${FirebaseAuth.getInstance().currentUser?.uid ?: "NULL"}")
+                    },
                 enabled = !uiState.carregando,
                 keyboardOptions = KeyboardOptions(
                     capitalization = KeyboardCapitalization.Characters,
