@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.imobiliario.aluno.data.model.DadosConsultaAluno
+import com.imobiliario.aluno.data.model.DisciplinaComNotas
 import com.imobiliario.aluno.data.repository.AlunoRepository
 import com.imobiliario.aluno.data.repository.AuthRepository
 import com.imobiliario.aluno.data.repository.ConsultaErro
 import com.imobiliario.aluno.data.repository.ConsultaResult
 import com.imobiliario.aluno.data.repository.NotificacaoRepository
+import com.imobiliario.aluno.data.repository.DisciplinaTempoReal
 import com.imobiliario.aluno.data.repository.NotasTempoRealRepository
 import com.imobiliario.aluno.data.repository.PerfilCacheRepository
 import com.imobiliario.aluno.data.repository.PerfilSalvo
@@ -43,6 +45,17 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
 
     private val _uiState = MutableStateFlow<PerfilUiState>(PerfilUiState.Carregando)
     val uiState: StateFlow<PerfilUiState> = _uiState.asStateFlow()
+
+    /**
+     * Última leitura do RTDB `notas_tempo_real` para o aluno atual.
+     * Guardada aqui (não só aplicada direto ao uiState) porque o
+     * listener liga logo no início de [carregar], antes do estado
+     * virar [PerfilUiState.Sucesso] — sem isto, uma nota lançada pelo
+     * professor nesse intervalo (ou enquanto o estado está em
+     * [PerfilUiState.Carregando]/[PerfilUiState.Erro]) era descartada
+     * silenciosamente e só aparecia numa próxima consulta manual.
+     */
+    private var ultimaLeituraTempoReal: Map<String, DisciplinaTempoReal> = emptyMap()
 
     private var codigoAluno: String = ""
 
@@ -117,22 +130,57 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     val emailUsuario: String
         get() = authRepository.usuarioAtual?.email ?: ""
 
+    /**
+     * Aplica a leitura mais recente do RTDB `notas_tempo_real` ao estado
+     * atual, atualizando disciplinas já exibidas e ACRESCENTANDO as que
+     * ainda não estavam na lista (ex.: professor lançou nota numa
+     * disciplina nova para este aluno).
+     *
+     * [atualizacoes] é sempre a leitura completa e mais recente (snapshot
+     * do nó inteiro do aluno, não um delta), então dá para reconstruir a
+     * lista de disciplinas inteira a partir dela sem perder nada.
+     *
+     * Se o estado ainda não for [PerfilUiState.Sucesso] (ex.: chegou
+     * enquanto a tela está em [PerfilUiState.Carregando]), a leitura já
+     * fica salva em [ultimaLeituraTempoReal] por [onNotasAtualizadas] e
+     * será reaplicada assim que o estado virar Sucesso — ver [carregar].
+     */
     private fun mesclarNotasTempoReal(
-        atualizacoes: Map<String, Map<String, String>>
+        atualizacoes: Map<String, DisciplinaTempoReal>
     ) {
         val estado = _uiState.value as? PerfilUiState.Sucesso ?: return
 
-        val disciplinasAtualizadas = estado.dados.disciplinas.map { disciplina ->
+        val restantes = atualizacoes.toMutableMap()
+
+        // 1) Atualiza disciplinas já exibidas, consumindo do mapa restante.
+        val disciplinasExistentesAtualizadas = estado.dados.disciplinas.map { disciplina ->
             val codigo = disciplina.codigoUnicoDisciplina
                 .replace("-", "")
                 .uppercase()
 
-            val novasNotas = atualizacoes[codigo] ?: return@map disciplina
+            val novaLeitura = restantes.remove(codigo) ?: return@map disciplina
 
             disciplina.copy(
-                notas = disciplina.notas + novasNotas
+                nomeDisciplina = novaLeitura.nomeDisciplina.ifBlank { disciplina.nomeDisciplina },
+                professor = novaLeitura.professor.ifBlank { disciplina.professor },
+                notas = disciplina.notas + novaLeitura.notas
             )
         }
+
+        // 2) O que sobrou em `restantes` são disciplinas que o RTDB tem
+        //    mas que ainda não existiam na tela — cria uma entrada nova
+        //    para cada uma em vez de descartar.
+        val disciplinasNovas = restantes.values.map { novaLeitura ->
+            DisciplinaComNotas(
+                disciplinaId = novaLeitura.codigoDisciplina.hashCode(),
+                codigoUnicoDisciplina = novaLeitura.codigoDisciplina,
+                nomeDisciplina = novaLeitura.nomeDisciplina,
+                professor = novaLeitura.professor,
+                notas = novaLeitura.notas
+            )
+        }
+
+        val disciplinasAtualizadas = disciplinasExistentesAtualizadas + disciplinasNovas
 
         val novosDados = estado.dados.copy(
             disciplinas = disciplinasAtualizadas
@@ -159,6 +207,9 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
     fun carregar(codigo: String) {
         if (codigoAluno == codigo && _uiState.value !is PerfilUiState.Erro) return
         codigoAluno = codigo
+        // Troca de aluno: descarta leitura pendente do aluno anterior para
+        // não misturar disciplinas de um código com o de outro.
+        ultimaLeituraTempoReal = emptyMap()
 
         val uidAtual = uid
 
@@ -166,6 +217,11 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
             uid = uidAtual,
             codigoAluno = codigo,
             onNotasAtualizadas = { atualizacoes ->
+                // Guarda sempre a leitura mais recente, mesmo que o
+                // estado ainda não seja Sucesso (ver comentário em
+                // ultimaLeituraTempoReal) — e tenta aplicar de imediato
+                // caso já seja.
+                ultimaLeituraTempoReal = atualizacoes
                 mesclarNotasTempoReal(atualizacoes)
             }
         )
@@ -191,6 +247,13 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
                     ),
                     offline = true
                 )
+                // O estado acabou de virar Sucesso — se o listener do RTDB
+                // já tinha entregue uma leitura antes disso (perdida até
+                // agora), aplica-a já, sem esperar a próxima notificação
+                // do listener.
+                if (ultimaLeituraTempoReal.isNotEmpty()) {
+                    mesclarNotasTempoReal(ultimaLeituraTempoReal)
+                }
             }
 
             // 2) Atualiza em segundo plano a partir do backend.
@@ -209,6 +272,13 @@ class PerfilViewModel(application: Application) : AndroidViewModel(application) 
                         dados.disciplinas
                     )
                     _uiState.value = PerfilUiState.Sucesso(perfil, dados, offline = false)
+                    // Idem ao passo 1: reaplica a leitura pendente do RTDB
+                    // (se houver) agora que o estado voltou a ser Sucesso —
+                    // isto pega tanto a leitura antiga quanto qualquer nota
+                    // lançada pelo professor durante a consulta ao backend.
+                    if (ultimaLeituraTempoReal.isNotEmpty()) {
+                        mesclarNotasTempoReal(ultimaLeituraTempoReal)
+                    }
                 }
                 is ConsultaResult.Erro -> {
                     if (resultado.tipo == ConsultaErro.NAO_AUTENTICADO) {

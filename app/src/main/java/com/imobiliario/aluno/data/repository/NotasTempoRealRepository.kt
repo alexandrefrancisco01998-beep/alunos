@@ -6,6 +6,18 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
+/**
+ * Snapshot de uma disciplina vinda de `notas_tempo_real`, com dados
+ * suficientes para criar uma [com.imobiliario.aluno.data.model.DisciplinaComNotas]
+ * do zero — não só para atualizar uma já existente na tela.
+ */
+data class DisciplinaTempoReal(
+    val codigoDisciplina: String,
+    val nomeDisciplina: String,
+    val professor: String,
+    val notas: Map<String, String>
+)
+
 class NotasTempoRealRepository {
 
     private val database = FirebaseDatabase.getInstance()
@@ -16,7 +28,7 @@ class NotasTempoRealRepository {
     fun observar(
         uid: String,
         codigoAluno: String,
-        onNotasAtualizadas: (Map<String, Map<String, String>>) -> Unit,
+        onNotasAtualizadas: (Map<String, DisciplinaTempoReal>) -> Unit,
         onErro: (String) -> Unit = {}
     ) {
         parar()
@@ -37,17 +49,15 @@ class NotasTempoRealRepository {
         listener = object : ValueEventListener {
 
             override fun onDataChange(snapshot: DataSnapshot) {
-                val resultado = mutableMapOf<String, Map<String, String>>()
+                val resultado = mutableMapOf<String, DisciplinaTempoReal>()
 
                 for (disciplinaSnapshot in snapshot.children) {
                     val codigoDisciplina = disciplinaSnapshot.key ?: continue
 
-                    val notasSnapshot =
-                        disciplinaSnapshot.child("notas")
-
+                    val notasRaw = disciplinaSnapshot.child("notas")
                     val notas = mutableMapOf<String, String>()
 
-                    for (notaSnapshot in notasSnapshot.children) {
+                    for (notaSnapshot in notasRaw.children) {
                         val campo = notaSnapshot.key ?: continue
                         val valor = notaSnapshot.getValue(String::class.java)
                             ?: notaSnapshot.value?.toString()
@@ -56,7 +66,17 @@ class NotasTempoRealRepository {
                         notas[campo] = valor
                     }
 
-                    resultado[codigoDisciplina] = notas
+                    val nomeDisciplina = disciplinaSnapshot.child("nomeDisciplina")
+                        .getValue(String::class.java) ?: ""
+                    val professor = disciplinaSnapshot.child("professor")
+                        .getValue(String::class.java) ?: ""
+
+                    resultado[codigoDisciplina] = DisciplinaTempoReal(
+                        codigoDisciplina = codigoDisciplina,
+                        nomeDisciplina = nomeDisciplina,
+                        professor = professor,
+                        notas = notas
+                    )
                 }
 
                 onNotasAtualizadas(resultado)
