@@ -1,6 +1,9 @@
 package com.imobiliario.aluno
 
 import android.app.Application
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.firestore.FirebaseFirestore
@@ -8,26 +11,45 @@ import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.firestore.PersistentCacheSettings
 
 class MeuFilhoApplication : Application() {
+
+    companion object {
+        const val NOTIFICATION_CHANNEL_ID = "pautaa_notificacoes"
+    }
+
     override fun onCreate() {
         super.onCreate()
+
         FirebaseApp.initializeApp(this)
 
-        // Ativa a persistência offline do Firestore aqui, uma única vez,
-        // antes de qualquer tela ou repositório usar o Firestore. Feito no
-        // onCreate do Application, nunca corre risco de "instância já em
-        // uso" — o app inteiro passa a ler/escrever notificações (e
-        // qualquer outro dado do Firestore) mesmo sem internet.
+        // Cria o canal ANTES de qualquer mensagem FCM chegar.
+        criarCanalNotificacoes()
+
+        // Persistência offline do Firestore.
         FirebaseFirestore.getInstance().apply {
             firestoreSettings = FirebaseFirestoreSettings.Builder(firestoreSettings)
-                .setLocalCacheSettings(PersistentCacheSettings.newBuilder().build())
+                .setLocalCacheSettings(
+                    PersistentCacheSettings.newBuilder().build()
+                )
                 .build()
         }
 
-        // Persistência offline do Realtime Database — substitui o Room
-        // como fonte de cache local (perfis + disciplinas/notas).
-        // Precisa ser chamado uma única vez, antes de qualquer uso de
-        // FirebaseDatabase.getInstance() no resto do app, por isso fica
-        // aqui no onCreate do Application.
+        // Persistência offline do Realtime Database.
         FirebaseDatabase.getInstance().setPersistenceEnabled(true)
+    }
+
+    private fun criarCanalNotificacoes() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+
+        val manager = getSystemService(NotificationManager::class.java)
+
+        val canal = NotificationChannel(
+            NOTIFICATION_CHANNEL_ID,
+            "Notas Atualizadas",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "Avisos de novas notas lançadas pelos professores"
+        }
+
+        manager.createNotificationChannel(canal)
     }
 }
