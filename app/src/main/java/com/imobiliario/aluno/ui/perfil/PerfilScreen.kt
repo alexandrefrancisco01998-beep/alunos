@@ -937,14 +937,6 @@ val linhas = remember(notas) {
                 Text("$alunoNome (Nº $alunoNumero) · $turmaNome", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        item {
-            Text(
-                text = "DIAGNÓSTICO TEMPORÁRIO: ${notas.size} notas recebidas | Chaves: ${notas.keys.sorted().joinToString(", ")}",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.error,
-                modifier = Modifier.padding(horizontal = Spacing.xs)
-            )
-        }
 
         item {
             Card(
