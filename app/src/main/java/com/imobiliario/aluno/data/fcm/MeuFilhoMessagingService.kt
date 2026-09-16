@@ -15,7 +15,6 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.imobiliario.aluno.BuildConfig
 import com.imobiliario.aluno.MainActivity
-import com.imobiliario.aluno.MeufilhoApplication
 import com.imobiliario.aluno.R
 import com.imobiliario.aluno.data.repository.FcmTokenRepository
 import kotlinx.coroutines.CoroutineScope
